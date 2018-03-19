@@ -1,6 +1,6 @@
 # R Package Providing an Blueprints and Tools for Functional Models for Regression
 
-[<img alt="Travis CI Build Status" src="https://img.shields.io/travis/thomasWeise/regressoR.functionalModels/master.svg" height="20"/>](https://travis-ci.org/thomasWeise/regressoR.functionalModels/)
+[<img alt="Travis CI Build Status" src="https://img.shields.io/travis/thomasWeise/regressoR.functional.models/master.svg" height="20"/>](https://travis-ci.org/thomasWeise/regressoR.functional.models/)
 
 ## Introduction
 In this package, we provide blueprints and tools for defining functional models for regression. First, there is a base class called `FunctionalModel` which allows specifying a model function with parameters, boundaries for the model parameters, a gradient function and a parameter guesser. Second, there are some utility methods that can be used to validate and guess parameters of such a model. Third, we provide a set of basic model instances of the model blueprints that can be used. This set will be continuously extented in the future.
@@ -11,7 +11,7 @@ You can install the package directl from GitHub by using the package
 follows:
 
     library(devtools)
-    install_github("thomasWeise/regressoR.functionalModels")
+    install_github("thomasWeise/regressoR.functional.models")
 
 If `devtools` is not yet installed on your machine, you need to FIRST do
 
