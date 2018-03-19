@@ -1,0 +1,123 @@
+#' @include FunctionalModel.R
+#' @include parCheck.R
+#' @include parFix.R
+#' @include utils.R
+
+#' @title Create a Parameter Estimate for a Given Functional Model
+#' @description Use the data available in the functional functional model
+#'   together with the \code{x} and \code{y} coordinates to be modeled to
+#'   produce an initial first guess of the parameters. This method should not be
+#'   confused with actually fitting the model. It won't do that, it just
+#'   provides a reasonable initial guess. It therefore uses the estimator
+#'   function provided by the functional model, if any, and then attempts to fix
+#'   any parameter values violating the constraints.
+#' @param functionalModel the model function functional model
+#' @param x the input values
+#' @param y the corresponding output values
+#' @param par an existing estimate, or \code{NULL} if no previous estimate exists
+#' @return the parameter estimate
+#' @export par.estimate
+#' @importFrom stats rnorm runif
+par.estimate <- function(functionalModel, x=NULL, y=NULL, par=NULL) {
+  # If an acceptable estimate is already given, use this estimate
+  if(par.check(functionalModel, par)) {
+    return(par);
+  }
+
+  count <- functionalModel@paramCount;
+
+  # It seems as if we cannot just use off-the-shelf Gaussian random numbers.
+  # Obtain the lower boundaries
+  paramLower <- functionalModel@paramLower;
+  if(base::is.null(paramLower)) {
+    paramLower <- base::rep(NA, count);
+  } else {
+    paramLower[!base::is.finite(paramLower)] <- NA;
+  }
+
+  # Obtain the lower boundaries
+  paramUpper <- functionalModel@paramUpper;
+  if(base::is.null(paramUpper)) {
+    paramUpper <- base::rep(NA, count);
+  } else {
+    paramUpper[!base::is.finite(paramUpper)] <- NA;
+  }
+
+  # Check if the functional model defines an estimator function and there is
+  # data that can be used for estimating.
+  if(!(base::is.null(x) ||
+       base::is.null(y) ||
+       base::is.null(functionalModel@estimator))) {
+    # The estimator function is defined, let's try using it.
+    estimate <- NULL;
+    .ignore.errors(
+        estimate <- functionalModel@estimator(x=x, y=y,
+                                              paramLower=paramLower, paramUpper=paramUpper)
+    );
+    if(par.check(functionalModel, estimate)) {
+      # The estimator function returned reasonable values, use them!
+      return(estimate);
+    }
+  }
+
+  # OK, let's see whether we can use Gaussian random numbers for initialization.
+  if( (base::is.null(functionalModel@paramLower) || base::all(functionalModel@paramLower < 1)) &&
+      (base::is.null(functionalModel@paramUpper) || base::all(functionalModel@paramUpper > (-1))) ) {
+    # It seems that there is a reasonable chance for that, so let us try 5*count times.
+    for(i in 1:5*count) {
+      # Generate the Gaussian distributed random vector.
+      estimate <- stats::rnorm(n=count);
+      if(par.check(functionalModel, estimate)) {
+        # A valid vector has been generated, let's try to use it.
+        return(estimate);
+      }
+    }
+  }
+
+  # This function is used to sample the elements of the estimate vector.
+  # It allows for boundaries being defined or undefined on different elements.
+  .sample <- function(x) {
+    lower <- paramLower[x];
+    upper <- paramUpper[x];
+    if(base::is.na(lower)) {
+      if(base::is.na(upper)) {
+        # Neither a lower nor an upper bound exists.
+        # We simply use Gaussian distributed random numbers.
+        return(stats::rnorm(n=1));
+      } else {
+        # An upper bound exists, but no lower bound.
+        # We try to sample numbers whose distances from the upper bound are
+        # absolute normally distributed with standard deviation upper.
+        return(upper * (1 - (base::sign(upper) * base::abs(stats::rnorm(n=1)))));
+      }
+    } else {
+      if(base::is.na(upper)) {
+        # A lower bound exists, but no upper bound.
+        # We try to sample numbers whose distances from the lower bound are
+        # absolute normally distributed with standard deviation lower.
+        return(lower * (1 + (base::sign(lower) * base::abs(stats::rnorm(n=1)))));
+      } else {
+        if(lower >= upper) {
+          return(lower);
+        }
+        # A lower and an upper bound both exist.
+        # We sample numbers uniformly distributed between both bounds.
+        return(stats::runif(n=1, min=lower, max=upper));
+      }
+    }
+  };
+
+  # Let's use our above sampling technique at most 50*count times.
+  range <- 1:count;
+  for(i in 1:50*count) {
+    estimate <- base::vapply(X=range, FUN=.sample, FUN.VALUE = NaN);
+    if(par.check(functionalModel, estimate)) {
+      return(estimate);
+    }
+  }
+
+  # OK, if we get here, we entirely failed to generate a reasonable parameter vector.
+  # We just fall back to Gaussian distributed random numbers and hope that it
+  # can automatically be fixed.
+  return(par.fix(par=stats::rnorm(n=count), lower=paramLower, upper=paramUpper, paramCount=count));
+}

@@ -1,0 +1,31 @@
+Package: regressoR.functional.models
+Type: Package
+Title: An R Package Providing an Blueprints and Tools for Functional Models for Regression
+Version: 0.8.0
+Author: Dr. Thomas Weise <tweise@hfuu.edu.cn>
+Maintainer: Dr. Thomas Weise <tweise@hfuu.edu.cn>
+Description: In this package, we provide blueprints and tools for defining functional models
+    for regression. First, there is a base class called \code{FunctionalModel} which
+    allows specifying a model function with parameters, boundaries for the model parameters,
+    a gradient function and a parameter guesser. Second, there are some utility methods that
+    can be used to validate and guess parameters of such a model. Third, we provide a set of
+    basic model instances of the model blueprints that can be used. This set will be
+    continuously extented in the future.
+License: LGPL-3
+Encoding: UTF-8
+LazyData: true
+URL: http://www.github.com/thomasWeise/regressoR.functional.models
+BugReports: http://www.github.com/thomasWeise/regressoR.functional.models/issues
+Imports: methods (>= 3.3.2),
+         stats (>= 3.3.2)
+Suggests: testthat (>= 2.0.0),
+          roxygen2 (>= 6.0.1)
+Collate: 
+    'FunctionalModel.R'
+    'utils.R'
+    'linear.R'
+    'parCheck.R'
+    'parFix.R'
+    'parEstimate.R'
+    'quadratic.R'
+RoxygenNote: 6.0.1.9000
