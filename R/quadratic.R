@@ -78,7 +78,7 @@
       return(res);
     }
 
-    res <- linear()@estimator(x, y);
+    res <- FunctionalModel.linear()@estimator(x, y);
     if(base::is.null(res)) { return(NULL); }
     return(base::c(res, 0));
   },
@@ -86,7 +86,8 @@
 )
 
 #' @title Obtain the Simple Quadratic Model \code{y = f(x) = a + b*x + c*x^2}
-#' @description A simple quadratic model, i.e., a model of the form \code{y = f(x)
-#'   = a + b*x + c*x^2} with three parameters (\code{a}, \code{b}, and \code{c})).
-#' @export quadratic
-quadratic <- function() .quadratic
+#' @description A simple quadratic model, i.e., a model of the form \code{y =
+#'   f(x) = a + b*x + c*x^2} with three parameters (\code{a}, \code{b}, and
+#'   \code{c})).
+#' @export FunctionalModel.quadratic
+FunctionalModel.quadratic <- function() .quadratic

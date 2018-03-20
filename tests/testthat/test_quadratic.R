@@ -1,8 +1,8 @@
 library("regressoR.functional.models")
-context("quadratic")
+context("FunctionalModel.quadratic")
 
-test_that("Test quadratic", {
-  model <- quadratic();
+test_that("Test FunctionalModel.quadratic", {
+  model <- FunctionalModel.quadratic();
   expect_identical(is.null(model), FALSE);
   expect_identical(is(model, "FunctionalModel"), TRUE)
   expect_identical(model@paramCount, 3L)

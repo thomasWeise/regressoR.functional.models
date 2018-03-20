@@ -1,8 +1,8 @@
 library("regressoR.functional.models")
-context("par.fix")
+context("FunctionalModel.par.fix")
 
 
-test_that("Test par.fix works correctly", {
+test_that("Test FunctionalModel.par.fix works correctly", {
   for(i in 1:75) {
     n <- as.integer(runif(n=1, min=1, max=8));
     if(runif(1) > 0.5) {
@@ -35,7 +35,7 @@ test_that("Test par.fix works correctly", {
         else { z <- NaN; }
         par[as.integer(runif(n)) + 1] <- z;
         }
-      x <- par.fix(par=par, lower, upper, n);
+      x <- FunctionalModel.par.fix(par=par, lower, upper, n);
       for(k in 1:n) {
         expect_true(is.finite(x[k]));
         if(!(is.null(lower) || is.na(lower[k]))) {

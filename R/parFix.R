@@ -12,8 +12,8 @@
 #'   specified
 #' @param paramCount the parameter count, by default the length of \code{par}
 #' @importFrom stats runif rnorm
-#' @export par.fix
-par.fix <- function(par, lower=NULL, upper=NULL, paramCount=base::length(par)) {
+#' @export FunctionalModel.par.fix
+FunctionalModel.par.fix <- function(par, lower=NULL, upper=NULL, paramCount=base::length(par)) {
   for(i in 1:paramCount) {
     pari <- par[i];
     notFinite <- (!(base::is.finite(pari)));

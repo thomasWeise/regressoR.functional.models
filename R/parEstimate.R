@@ -11,24 +11,25 @@
 #'   provides a reasonable initial guess. It therefore uses the estimator
 #'   function provided by the functional model, if any, and then attempts to fix
 #'   any parameter values violating the constraints.
-#' @param functionalModel the model function functional model
+#' @param model the model function functional model
 #' @param x the input values
 #' @param y the corresponding output values
-#' @param par an existing estimate, or \code{NULL} if no previous estimate exists
+#' @param par an existing estimate, or \code{NULL} if no previous estimate
+#'   exists
 #' @return the parameter estimate
-#' @export par.estimate
+#' @export FunctionalModel.par.estimate
 #' @importFrom stats rnorm runif
-par.estimate <- function(functionalModel, x=NULL, y=NULL, par=NULL) {
+FunctionalModel.par.estimate <- function(model, x=NULL, y=NULL, par=NULL) {
   # If an acceptable estimate is already given, use this estimate
-  if(par.check(functionalModel, par)) {
+  if(FunctionalModel.par.check(model, par)) {
     return(par);
   }
 
-  count <- functionalModel@paramCount;
+  count <- model@paramCount;
 
   # It seems as if we cannot just use off-the-shelf Gaussian random numbers.
   # Obtain the lower boundaries
-  paramLower <- functionalModel@paramLower;
+  paramLower <- model@paramLower;
   if(base::is.null(paramLower)) {
     paramLower <- base::rep(NA, count);
   } else {
@@ -36,7 +37,7 @@ par.estimate <- function(functionalModel, x=NULL, y=NULL, par=NULL) {
   }
 
   # Obtain the lower boundaries
-  paramUpper <- functionalModel@paramUpper;
+  paramUpper <- model@paramUpper;
   if(base::is.null(paramUpper)) {
     paramUpper <- base::rep(NA, count);
   } else {
@@ -47,27 +48,27 @@ par.estimate <- function(functionalModel, x=NULL, y=NULL, par=NULL) {
   # data that can be used for estimating.
   if(!(base::is.null(x) ||
        base::is.null(y) ||
-       base::is.null(functionalModel@estimator))) {
+       base::is.null(model@estimator))) {
     # The estimator function is defined, let's try using it.
     estimate <- NULL;
     .ignore.errors(
-        estimate <- functionalModel@estimator(x=x, y=y,
+        estimate <- model@estimator(x=x, y=y,
                                               paramLower=paramLower, paramUpper=paramUpper)
     );
-    if(par.check(functionalModel, estimate)) {
+    if(FunctionalModel.par.check(model, estimate)) {
       # The estimator function returned reasonable values, use them!
       return(estimate);
     }
   }
 
   # OK, let's see whether we can use Gaussian random numbers for initialization.
-  if( (base::is.null(functionalModel@paramLower) || base::all(functionalModel@paramLower < 1)) &&
-      (base::is.null(functionalModel@paramUpper) || base::all(functionalModel@paramUpper > (-1))) ) {
+  if( (base::is.null(model@paramLower) || base::all(model@paramLower < 1)) &&
+      (base::is.null(model@paramUpper) || base::all(model@paramUpper > (-1))) ) {
     # It seems that there is a reasonable chance for that, so let us try 5*count times.
     for(i in 1:5*count) {
       # Generate the Gaussian distributed random vector.
       estimate <- stats::rnorm(n=count);
-      if(par.check(functionalModel, estimate)) {
+      if(FunctionalModel.par.check(model, estimate)) {
         # A valid vector has been generated, let's try to use it.
         return(estimate);
       }
@@ -111,7 +112,7 @@ par.estimate <- function(functionalModel, x=NULL, y=NULL, par=NULL) {
   range <- 1:count;
   for(i in 1:50*count) {
     estimate <- base::vapply(X=range, FUN=.sample, FUN.VALUE = NaN);
-    if(par.check(functionalModel, estimate)) {
+    if(FunctionalModel.par.check(model, estimate)) {
       return(estimate);
     }
   }
@@ -119,5 +120,5 @@ par.estimate <- function(functionalModel, x=NULL, y=NULL, par=NULL) {
   # OK, if we get here, we entirely failed to generate a reasonable parameter vector.
   # We just fall back to Gaussian distributed random numbers and hope that it
   # can automatically be fixed.
-  return(par.fix(par=stats::rnorm(n=count), lower=paramLower, upper=paramUpper, paramCount=count));
+  return(FunctionalModel.par.fix(par=stats::rnorm(n=count), lower=paramLower, upper=paramUpper, paramCount=count));
 }

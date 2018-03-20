@@ -73,5 +73,5 @@
 #' @title Obtain the Simple Linear Model \code{y = f(x) = a+b*x}
 #' @description A simple linear model, i.e., a model of the form \code{y = f(x)
 #'   = a+b*x} with two parameters (\code{a} and \code{b})).
-#' @export linear
-linear <- function() .linear
+#' @export FunctionalModel.linear
+FunctionalModel.linear <- function() .linear
