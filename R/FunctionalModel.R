@@ -46,94 +46,94 @@ FunctionalModel <- setClass(
   prototype=prototype(gradient=NULL, estimator=NULL, paramLower=NULL, paramUpper=NULL),
   validity = function(object) {
     # check model function
-    if(base::is.null(object@f) || (!(base::is.function(object@f)))){
+    if(is.null(object@f) || (!(is.function(object@f)))){
       return("Model function must be non-null and a proper function.")
     }
-    if(base::is.primitive(object@f)) {
-      f.args <- base::formals(base::args(object@f));
+    if(is.primitive(object@f)) {
+      f.args <- formals(args(object@f));
     } else {
-      f.args <- base::formals(object@f);
+      f.args <- formals(object@f);
     }
-    if ((base::length(f.args) != 2L) || (!(base::identical(base::names(f.args), base::c("x", "par"))))) {
+    if ((length(f.args) != 2L) || (!(identical(names(f.args), c("x", "par"))))) {
       return("Model function must take exactly two arguments two arguments named 'x' and 'par'.");
     }
 
     # check the parameter count
-    if (base::is.null(object@paramCount) ||
-        base::is.na(object@paramCount)[1] ||
-        (!(base::is.finite(object@paramCount))) ||
-        (!(base::is.integer(object@paramCount))) ||
+    if (is.null(object@paramCount) ||
+        is.na(object@paramCount)[1] ||
+        (!(is.finite(object@paramCount))) ||
+        (!(is.integer(object@paramCount))) ||
         (object@paramCount <= 0)) {
       return("Model parameter count must be an integer and bigger or equal to 1.");
     }
 
     # check the lower parameter limits
-    if(!(base::is.null(object@paramLower))) {
-      if(!(base::is.vector(object@paramLower))){
+    if(!(is.null(object@paramLower))) {
+      if(!(is.vector(object@paramLower))){
         return("Lower parameter bounds must be vector if specified.");
       }
-      if(base::length(object@paramLower) != object@paramCount){
+      if(length(object@paramLower) != object@paramCount){
         return("Length of lower parameter bounds vector must be the same as parameter count.");
       }
-      if(base::any(base::is.nan(object@paramLower), na.rm=TRUE)) {
+      if(any(is.nan(object@paramLower), na.rm=TRUE)) {
         return("Lower limit cannot be NaN.");
       }
-      if(base::any(object@paramLower >= +Inf, na.rm=TRUE)) {
+      if(any(object@paramLower >= +Inf, na.rm=TRUE)) {
         return("Lower limit cannot be positive infinite.");
       }
     }
 
     # check the upper parameter limits
-    if(!(base::is.null(object@paramUpper))){
-      if(!(base::is.vector(object@paramUpper))){
+    if(!(is.null(object@paramUpper))){
+      if(!(is.vector(object@paramUpper))){
         return("Upper parameter bounds must be vector if specified.");
       }
-      if(base::length(object@paramUpper) != object@paramCount){
+      if(length(object@paramUpper) != object@paramCount){
         return("Length of upper parameter bounds vector must be the same as parameter count.");
       }
-      if(base::any(base::is.nan(object@paramUpper), na.rm=TRUE)) {
+      if(any(is.nan(object@paramUpper), na.rm=TRUE)) {
         return("Upper limit cannot be NaN.");
       }
-      if(base::any(object@paramUpper <= -Inf, na.rm=TRUE)) {
+      if(any(object@paramUpper <= -Inf, na.rm=TRUE)) {
         return("Upper limit cannot be negative infinite.");
       }
     }
 
     # check that upper and lower bounds do not collide
-    if(!(base::is.null(object@paramLower) || base::is.null(object@paramUpper))) {
-      if(!(base::all(object@paramLower <= object@paramUpper, na.rm = TRUE))) {
+    if(!(is.null(object@paramLower) || is.null(object@paramUpper))) {
+      if(!(all(object@paramLower <= object@paramUpper, na.rm = TRUE))) {
         return("Lower bounds of parameters must be less or equal to upper bounds.");
       }
     }
 
     # check gradient function
-    if(!(base::is.null(object@gradient))) {
-      if(!(base::is.function(object@gradient))) {
+    if(!(is.null(object@gradient))) {
+      if(!(is.function(object@gradient))) {
         return("Gradient must be a function if specified.");
       }
-      if(base::is.primitive(object@gradient)) {
-        gradient.args <- base::formals(base::args(object@gradient));
+      if(is.primitive(object@gradient)) {
+        gradient.args <- formals(args(object@gradient));
       } else {
-        gradient.args <- base::formals(object@gradient);
+        gradient.args <- formals(object@gradient);
       }
-      if ((base::length(gradient.args) != 2L) ||
-          (!(base::identical(base::names(gradient.args), base::c("x", "par"))))) {
+      if ((length(gradient.args) != 2L) ||
+          (!(identical(names(gradient.args), c("x", "par"))))) {
         return("Model gradient function must take exactly two arguments two arguments named 'x' and 'par'.");
       }
     }
 
     # check estimator function
-    if(!(base::is.null(object@estimator))) {
-      if(!(base::is.function(object@estimator))) {
+    if(!(is.null(object@estimator))) {
+      if(!(is.function(object@estimator))) {
         return("Estimator must be a function if specified.");
       }
-      if(base::is.primitive(object@estimator)) {
-        estimator.args <- base::formals(base::args(object@estimator));
+      if(is.primitive(object@estimator)) {
+        estimator.args <- formals(args(object@estimator));
       } else {
-        estimator.args <- base::formals(object@estimator);
+        estimator.args <- formals(object@estimator);
       }
-      if ((base::length(estimator.args) != 4L) ||
-          (!(base::identical(base::names(estimator.args), base::c("x", "y", "paramLower", "paramUpper"))))) {
+      if ((length(estimator.args) != 4L) ||
+          (!(identical(names(estimator.args), c("x", "y", "paramLower", "paramUpper"))))) {
         return("Model estimator function must take exactly two arguments two arguments named 'x', 'y', 'paramLower', and 'paramUpper'.");
       }
     }
@@ -173,21 +173,21 @@ FunctionalModel <- setClass(
 FunctionalModel.new <- function(f, paramCount, gradient=NULL, estimator=NULL,
                                 paramLower=NULL, paramUpper=NULL) {
 
-  if(!(base::is.null(paramLower))) {
+  if(!(is.null(paramLower))) {
     # Alias negative infinite lower limits to NA.
     # Alias lower limits to NULL if they are all NA.
     paramLower[paramLower <= -Inf] <- NA;
-    if(base::all(base::is.na(paramLower))) {
+    if(all(is.na(paramLower))) {
       # If all values are NA, then we don't need a lower bound
       paramLower <- NULL;
     }
   }
 
-  if(!(base::is.null(paramUpper))) {
+  if(!(is.null(paramUpper))) {
     # Alias positive infinite upper limits to NA.
     # Alias upper limits to NULL if they are all NA.
     paramUpper[paramLower >= +Inf] <- NA;
-    if(base::all(base::is.na(paramUpper))) {
+    if(all(is.na(paramUpper))) {
       # If all values are NA, then we don't need an upper bound
       paramUpper <- NULL;
     }
@@ -198,14 +198,14 @@ FunctionalModel.new <- function(f, paramCount, gradient=NULL, estimator=NULL,
                         f=f, paramCount=paramCount, gradient=gradient,
                              estimator=estimator, paramLower=paramLower,
                         paramUpper=paramUpper);
-  result <- base::force(result);
-  result@f <- base::force(result@f);
-  result@paramCount <- base::force(result@paramCount);
-  result@gradient <- base::force(result@gradient);
-  result@estimator <- base::force(result@estimator);
-  result@paramLower <- base::force(result@paramLower);
-  result@paramUpper <- base::force(result@paramUpper);
-  result <- base::force(result);
+  result <- force(result);
+  result@f <- force(result@f);
+  result@paramCount <- force(result@paramCount);
+  result@gradient <- force(result@gradient);
+  result@estimator <- force(result@estimator);
+  result@paramLower <- force(result@paramLower);
+  result@paramUpper <- force(result@paramUpper);
+  result <- force(result);
   methods::validObject(result);
   return(result);
 }

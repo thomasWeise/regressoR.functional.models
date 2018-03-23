@@ -13,14 +13,14 @@
 #' @param paramCount the parameter count, by default the length of \code{par}
 #' @importFrom stats runif rnorm
 #' @export FunctionalModel.par.fix
-FunctionalModel.par.fix <- function(par, lower=NULL, upper=NULL, paramCount=base::length(par)) {
+FunctionalModel.par.fix <- function(par, lower=NULL, upper=NULL, paramCount=length(par)) {
   for(i in 1:paramCount) {
     pari <- par[i];
-    notFinite <- (!(base::is.finite(pari)));
+    notFinite <- (!(is.finite(pari)));
 
-    if(base::is.null(lower) || base::is.na(lower[i])) {
+    if(is.null(lower) || is.na(lower[i])) {
       # only consider upper bound
-      if(base::is.null(upper) || base::is.na(upper[i])) {
+      if(is.null(upper) || is.na(upper[i])) {
         # but there also is no upper bound
         if(notFinite) {
           # replace non-finite value with normally distributed random number
@@ -32,34 +32,34 @@ FunctionalModel.par.fix <- function(par, lower=NULL, upper=NULL, paramCount=base
           # we need to fix par
           if(upper[i] < 0) {
             # Upper bound is negative: need to create number with bigger absolute value
-            par[i] <- (stats::runif(n=1, min=2*upper[i], max=upper[i]) - base::abs(stats::rnorm(n=1)));
+            par[i] <- (stats::runif(n=1, min=2*upper[i], max=upper[i]) - abs(stats::rnorm(n=1)));
           } else {
             if(upper[i] > 0) {
               # Upper bound is positive: need to create number with smaller absolute value
-              par[i] <- (stats::runif(n=1, min=-upper[i], max=upper[i]) - base::abs(stats::rnorm(n=1)));
+              par[i] <- (stats::runif(n=1, min=-upper[i], max=upper[i]) - abs(stats::rnorm(n=1)));
             } else {
               # Upper bound is 0: create negative normally distributed number
-              par[i] <- -base::abs(stats::rnorm(n=1));
+              par[i] <- -abs(stats::rnorm(n=1));
             }
           }
         }
       }
       #else no bound specified, we don't need to fix this point
     } else {
-      if(base::is.null(upper) || base::is.na(upper[i])) {
+      if(is.null(upper) || is.na(upper[i])) {
         # only lower bound is relevant
         if(notFinite || (pari < lower[i])) {
           # we need to fix par
           if(lower[i] < 0) {
             # lower bound is negative: need to create number with smaller absolute value
-            par[i] <- (stats::runif(n=1, min=lower[i], max=-lower[i]) + base::abs(stats::rnorm(n=1)));
+            par[i] <- (stats::runif(n=1, min=lower[i], max=-lower[i]) + abs(stats::rnorm(n=1)));
           } else {
             if(lower[i] > 0) {
               # lower bound is positive: need to create number with larger absolute value
-              par[i] <- (stats::runif(n=1, min=lower[i], max=2*lower[i]) + base::abs(stats::rnorm(n=1)));
+              par[i] <- (stats::runif(n=1, min=lower[i], max=2*lower[i]) + abs(stats::rnorm(n=1)));
             } else {
               # lower bound is 0: create positive normally distributed number
-              par[i] <- base::abs(stats::rnorm(n=1));
+              par[i] <- abs(stats::rnorm(n=1));
             }
           }
         }

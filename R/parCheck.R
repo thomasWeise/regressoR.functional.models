@@ -9,14 +9,14 @@
 #' @return \code{TRUE} if the parameter vector is OK, \code{FALSE} otherwise
 #' @export FunctionalModel.par.check
 FunctionalModel.par.check <- function(model, par) {
-  if(base::is.null(model)) {
+  if(is.null(model)) {
     stop("Functional model cannot be null.")
   }
-  (!(base::is.null(par))) &&
-    (base::length(par) == model@paramCount) &&
-    base::all(base::is.finite(par)) &&
-    (base::is.null(model@paramLower) ||
-     base::all(par >= model@paramLower, na.rm = TRUE)) &&
-    (base::is.null(model@paramUpper) ||
-     base::all(par <= model@paramUpper, na.rm = TRUE));
+  (!(is.null(par))) &&
+    (length(par) == model@paramCount) &&
+    all(is.finite(par)) &&
+    (is.null(model@paramLower) ||
+     all(par >= model@paramLower, na.rm = TRUE)) &&
+    (is.null(model@paramUpper) ||
+     all(par <= model@paramUpper, na.rm = TRUE));
 }

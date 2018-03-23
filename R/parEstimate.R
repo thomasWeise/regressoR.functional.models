@@ -30,25 +30,25 @@ FunctionalModel.par.estimate <- function(model, x=NULL, y=NULL, par=NULL) {
   # It seems as if we cannot just use off-the-shelf Gaussian random numbers.
   # Obtain the lower boundaries
   paramLower <- model@paramLower;
-  if(base::is.null(paramLower)) {
-    paramLower <- base::rep(NA, count);
+  if(is.null(paramLower)) {
+    paramLower <- rep(NA, count);
   } else {
-    paramLower[!base::is.finite(paramLower)] <- NA;
+    paramLower[!is.finite(paramLower)] <- NA;
   }
 
   # Obtain the lower boundaries
   paramUpper <- model@paramUpper;
-  if(base::is.null(paramUpper)) {
-    paramUpper <- base::rep(NA, count);
+  if(is.null(paramUpper)) {
+    paramUpper <- rep(NA, count);
   } else {
-    paramUpper[!base::is.finite(paramUpper)] <- NA;
+    paramUpper[!is.finite(paramUpper)] <- NA;
   }
 
   # Check if the functional model defines an estimator function and there is
   # data that can be used for estimating.
-  if(!(base::is.null(x) ||
-       base::is.null(y) ||
-       base::is.null(model@estimator))) {
+  if(!(is.null(x) ||
+       is.null(y) ||
+       is.null(model@estimator))) {
     # The estimator function is defined, let's try using it.
     estimate <- NULL;
     .ignore.errors(
@@ -62,8 +62,8 @@ FunctionalModel.par.estimate <- function(model, x=NULL, y=NULL, par=NULL) {
   }
 
   # OK, let's see whether we can use Gaussian random numbers for initialization.
-  if( (base::is.null(model@paramLower) || base::all(model@paramLower < 1)) &&
-      (base::is.null(model@paramUpper) || base::all(model@paramUpper > (-1))) ) {
+  if( (is.null(model@paramLower) || all(model@paramLower < 1)) &&
+      (is.null(model@paramUpper) || all(model@paramUpper > (-1))) ) {
     # It seems that there is a reasonable chance for that, so let us try 5*count times.
     for(i in 1:5*count) {
       # Generate the Gaussian distributed random vector.
@@ -80,8 +80,8 @@ FunctionalModel.par.estimate <- function(model, x=NULL, y=NULL, par=NULL) {
   .sample <- function(x) {
     lower <- paramLower[x];
     upper <- paramUpper[x];
-    if(base::is.na(lower)) {
-      if(base::is.na(upper)) {
+    if(is.na(lower)) {
+      if(is.na(upper)) {
         # Neither a lower nor an upper bound exists.
         # We simply use Gaussian distributed random numbers.
         return(stats::rnorm(n=1));
@@ -89,14 +89,14 @@ FunctionalModel.par.estimate <- function(model, x=NULL, y=NULL, par=NULL) {
         # An upper bound exists, but no lower bound.
         # We try to sample numbers whose distances from the upper bound are
         # absolute normally distributed with standard deviation upper.
-        return(upper * (1 - (base::sign(upper) * base::abs(stats::rnorm(n=1)))));
+        return(upper * (1 - (sign(upper) * abs(stats::rnorm(n=1)))));
       }
     } else {
-      if(base::is.na(upper)) {
+      if(is.na(upper)) {
         # A lower bound exists, but no upper bound.
         # We try to sample numbers whose distances from the lower bound are
         # absolute normally distributed with standard deviation lower.
-        return(lower * (1 + (base::sign(lower) * base::abs(stats::rnorm(n=1)))));
+        return(lower * (1 + (sign(lower) * abs(stats::rnorm(n=1)))));
       } else {
         if(lower >= upper) {
           return(lower);
@@ -111,7 +111,7 @@ FunctionalModel.par.estimate <- function(model, x=NULL, y=NULL, par=NULL) {
   # Let's use our above sampling technique at most 50*count times.
   range <- 1:count;
   for(i in 1:50*count) {
-    estimate <- base::vapply(X=range, FUN=.sample, FUN.VALUE = NaN);
+    estimate <- vapply(X=range, FUN=.sample, FUN.VALUE = NaN);
     if(FunctionalModel.par.check(model, estimate)) {
       return(estimate);
     }

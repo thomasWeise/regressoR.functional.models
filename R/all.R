@@ -2,7 +2,7 @@
 #' @include quadratic.R
 
 # the internal variable for default modes
-.all <- base::list(FunctionalModel.linear(),
+.all <- list(FunctionalModel.linear(),
                    FunctionalModel.quadratic())
 
 #' @title Obtain a List with the All Functional Models Provided by this Library

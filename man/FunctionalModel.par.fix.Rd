@@ -5,7 +5,7 @@
 \title{Fix a Vector to be Contained in the Lower/Upper Boundaries}
 \usage{
 FunctionalModel.par.fix(par, lower = NULL, upper = NULL,
-  paramCount = base::length(par))
+  paramCount = length(par))
 }
 \arguments{
 \item{par}{the parameter vector to fix}
