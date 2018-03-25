@@ -7,9 +7,9 @@
   x1s<-x1*x1;
   x2s<-x2*x2;
   x3s<-x3*x3;
-  div<-(x1*((x3s)-(x2s))-x2*(x3s)+(x2s)*x3+(x1s)*(x2-x3));
-  res <- c( (x1*((x3s)*y2-(x2s)*y3)+(x1s)*(x2*y3-x3*y2)+((x2s)*x3-x2*(x3s))*y1)/div,
-           (-( ((x1s)*(y3-y2)-(x2s)*y3+(x3s)*y2+((x2s)-(x3s))*y1)/div)),
+  div<-(x1*(x3s-x2s)-x2*x3s+x2s*x3+x1s*(x2-x3));
+  res <- c( (x1*(x3s*y2-x2s*y3)+x1s*(x2*y3-x3*y2)+(x2s*x3-x2*x3s)*y1)/div,
+           (-( (x1s*(y3-y2)-x2s*y3+x3s*y2+(x2s-x3s)*y1)/div)),
             (x1*(y3-y2)-x2*y3+x3*y2+(x2-x3)*y1)/div);
   if(is.finite(res[1]) && is.finite(res[2] && is.finite(res[3]))) {
     return(res);
