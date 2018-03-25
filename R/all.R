@@ -1,9 +1,11 @@
 #' @include linear.R
 #' @include quadratic.R
+#' @include cubic.R
 
 # the internal variable for default modes
 .all <- list(FunctionalModel.linear(),
-                   FunctionalModel.quadratic())
+             FunctionalModel.quadratic(),
+             FunctionalModel.cubic())
 
 #' @title Obtain a List with the All Functional Models Provided by this Library
 #' @description This function returns a list with the all the models provided by

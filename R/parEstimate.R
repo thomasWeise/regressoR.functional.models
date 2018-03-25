@@ -52,8 +52,7 @@ FunctionalModel.par.estimate <- function(model, x=NULL, y=NULL, par=NULL) {
     # The estimator function is defined, let's try using it.
     estimate <- NULL;
     .ignore.errors(
-        estimate <- model@estimator(x=x, y=y,
-                                              paramLower=paramLower, paramUpper=paramUpper)
+        estimate <- model@estimator(x=x, y=y, paramLower=paramLower, paramUpper=paramUpper)
     );
     if(FunctionalModel.par.check(model, estimate)) {
       # The estimator function returned reasonable values, use them!
