@@ -80,3 +80,18 @@ test_that("Test estimate and no limits", {
     expect_identical(is.finite(estimate), rep(TRUE, model@paramCount));
   }
 })
+
+
+test_that("Test estimate over all default models", {
+  for(i in 5*(1:10)) {
+    x <- runif(n=i, min=1, max=100);
+    y <- runif(n=i, min=1, max=100);
+    for(model in FunctionalModel.all()) {
+      result <- FunctionalModel.par.estimate(model, x, y);
+      expect_true(!(is.null(result)));
+      expect_identical(length(result), model@paramCount);
+      expect_true(FunctionalModel.par.check(model, result));
+    }
+  }
+})
+

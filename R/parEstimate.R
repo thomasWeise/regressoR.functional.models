@@ -46,14 +46,10 @@ FunctionalModel.par.estimate <- function(model, x=NULL, y=NULL, par=NULL) {
 
   # Check if the functional model defines an estimator function and there is
   # data that can be used for estimating.
-  if(!(is.null(x) ||
-       is.null(y) ||
-       is.null(model@estimator))) {
+  if(!(is.null(x) || is.null(y) || is.null(model@estimator))) {
     # The estimator function is defined, let's try using it.
     estimate <- NULL;
-    .ignore.errors(
-        estimate <- model@estimator(x=x, y=y)
-    );
+    .ignore.errors(estimate <- model@estimator(x=x, y=y));
     if(FunctionalModel.par.check(model, estimate)) {
       # The estimator function returned reasonable values, use them!
       return(estimate);
@@ -61,8 +57,8 @@ FunctionalModel.par.estimate <- function(model, x=NULL, y=NULL, par=NULL) {
   }
 
   # OK, let's see whether we can use Gaussian random numbers for initialization.
-  if( (is.null(model@paramLower) || all(model@paramLower < 1)) &&
-      (is.null(model@paramUpper) || all(model@paramUpper > (-1))) ) {
+  if( (is.null(model@paramLower) || all(model@paramLower[!is.na(model@paramLower)] < 1)) &&
+      (is.null(model@paramUpper) || all(model@paramUpper[!is.na(model@paramUpper)] > (-1))) ) {
     # It seems that there is a reasonable chance for that, so let us try 5*count times.
     for(i in 1:5*count) {
       # Generate the Gaussian distributed random vector.
