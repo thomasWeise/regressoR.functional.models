@@ -19,7 +19,7 @@ test_that("Test FunctionalModel constructor", {
   obj3 <- new ("FunctionalModel", f=f2, paramCount=3L, gradient=grad)
   obj4 <- new ("FunctionalModel", f=f2, paramCount=3L, gradient=grad, paramUpper=c(1,2,3))
   obj5 <- new ("FunctionalModel", f=f2, paramCount=3L, gradient=grad, paramLower=c(1,2,3), paramUpper=c(3,4,5))
-  estimator=function(x,y,paramLower,paramUpper) c(3,4,5);
+  estimator=function(x,y) c(3,4,5);
   obj6 <- new ("FunctionalModel", f=f2, paramCount=3L, gradient=grad, paramLower=c(1,2,3), paramUpper=c(3,4,5), estimator=estimator)
 
   expect_identical(obj3@f, f2);
@@ -75,7 +75,7 @@ test_that("Test FunctionalModel.new ", {
   obj3 <- FunctionalModel.new(f=f2, paramCount=3L, gradient=grad)
   obj4 <- FunctionalModel.new(f=f2, paramCount=3L, gradient=grad, paramUpper=c(1,2,3))
   obj5 <- FunctionalModel.new(f=f2, paramCount=3L, gradient=grad, paramLower=c(1,2,3), paramUpper=c(3,4,5))
-  estimator=function(x,y,paramLower,paramUpper) c(3,4,5);
+  estimator=function(x,y) c(3,4,5);
   obj6 <- FunctionalModel.new(f=f2, paramCount=3L, gradient=grad, paramLower=c(1,2,3), paramUpper=c(3,4,5), estimator=estimator)
 
   expect_identical(obj3@f, f2);

@@ -40,7 +40,7 @@
 
 
 # The cubic estimator function
-.cubic.estimator <- function(x, y, paramLower, paramUpper) {
+.cubic.estimator <- function(x, y) {
   len <- length(x);
   res <- NULL;
 

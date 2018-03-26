@@ -15,7 +15,7 @@ test_that("Test FunctionalModel.par.estimate and estimator", {
   f <- function(x, par) { x*par[1] }
   grad <- function(x, par) { x*par }
   model <- FunctionalModel.new(f=f, paramCount=3L, gradient=grad,
-                                             estimator=function(x, y, paramLower, paramUpper) c(2, 3, 4),
+                                             estimator=function(x, y) c(2, 3, 4),
                                              paramUpper=c(3,4,5),
                                              paramLower=c(1,2,3))
   expect_identical(FunctionalModel.par.estimate(model, c(3, 3), c(4, 4), c(2.2, 3.2, 4.2)), c(2.2, 3.2, 4.2));
@@ -27,7 +27,7 @@ test_that("Test FunctionalModel.par.estimate and wrong estimator", {
   f <- function(x, par) { x*par[1] }
   grad <- function(x, par) { x*par }
   model <- FunctionalModel.new(f=f, paramCount=3L, gradient=grad,
-                                             estimator=function(x, y, paramLower, paramUpper) c(23, 3, 4),
+                                             estimator=function(x, y) c(23, 3, 4),
                                              paramUpper=c(3,4,5),
                                              paramLower=c(1,2,3))
   expect_identical(FunctionalModel.par.estimate(model, c(3, 3), c(4, 4), c(2.2, 3.2, 4.2)), c(2.2, 3.2, 4.2));

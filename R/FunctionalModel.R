@@ -18,8 +18,7 @@ setClassUnion(".regressoR.functional.models.vectorOrNULL", c("numeric","NULL"))
 #' @slot f the model function, taking as parameters a value \code{x} followed by
 #'   a parameter vector \code{par}
 #' @slot estimator is a function which takes in a vector of \code{x} and a
-#'   vector of \code{y} values as well as limits \code{paramLower} and
-#'   \code{paramUpper} and returns an estimate of the parameters, or \code{NULL}
+#'   vector of \code{y} values and returns an estimate of the parameters, or \code{NULL}
 #'   if no estimate can be made better than just standard random numbers
 #' @slot gradient a function which takes in a value \code{x} and \code{par} and
 #'   returns a vector with the gradient for each parameter dimension
@@ -132,9 +131,9 @@ FunctionalModel <- setClass(
       } else {
         estimator.args <- formals(object@estimator);
       }
-      if ((length(estimator.args) != 4L) ||
-          (!(identical(names(estimator.args), c("x", "y", "paramLower", "paramUpper"))))) {
-        return("Model estimator function must take exactly two arguments two arguments named 'x', 'y', 'paramLower', and 'paramUpper'.");
+      if ((length(estimator.args) != 2L) ||
+          (!(identical(names(estimator.args), c("x", "y"))))) {
+        return("Model estimator function must take exactly two arguments two arguments named 'x', and 'y'.");
       }
     }
 

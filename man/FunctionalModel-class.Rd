@@ -21,8 +21,7 @@ This class holds the a blueprint for a functional model, i.e.,
 a parameter vector \code{par}}
 
 \item{\code{estimator}}{is a function which takes in a vector of \code{x} and a
-vector of \code{y} values as well as limits \code{paramLower} and
-\code{paramUpper} and returns an estimate of the parameters, or \code{NULL}
+vector of \code{y} values and returns an estimate of the parameters, or \code{NULL}
 if no estimate can be made better than just standard random numbers}
 
 \item{\code{gradient}}{a function which takes in a value \code{x} and \code{par} and

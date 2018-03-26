@@ -18,7 +18,7 @@
 }
 
 # The quadratic estimator function
-.quadratic.estimator <- function(x, y, paramLower, paramUpper) {
+.quadratic.estimator <- function(x, y) {
   len <- length(x);
   res <- NULL;
 

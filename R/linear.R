@@ -20,7 +20,7 @@
 }
 
 # the linear estimator function
-.linear.estimator <- function(x, y, paramLower=NULL, paramUpper=NULL) {
+.linear.estimator <- function(x, y) {
   len <- length(x);
   res <- NULL;
   if(len > 2L){
