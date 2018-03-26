@@ -61,7 +61,7 @@
 
 # The internal constant for quadratic models
 .quadratic <- FunctionalModel.new(
-  f = function(x, par) par[1] + (x * (par[2] + (x * par[3]))),
+  f = function(x, par) par[1L] + (x * (par[2L] + (x * par[3L]))),
   paramCount = 3L,
   estimator = .quadratic.estimator,
   gradient=function(x, par) c(1, x, x*x)

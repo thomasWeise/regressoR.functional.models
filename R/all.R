@@ -2,13 +2,16 @@
 #' @include quadratic.R
 #' @include cubic.R
 #' @include exponentialDecay.R
-
+#' @include logistic.R
+#'
 # the internal variable for default modes
 .all <- list(FunctionalModel.linear(),
              FunctionalModel.quadratic(),
              FunctionalModel.cubic(),
              FunctionalModel.exponentialDecay.1(),
-             FunctionalModel.exponentialDecay.2())
+             FunctionalModel.exponentialDecay.2(),
+             FunctionalModel.logistic.1(),
+             FunctionalModel.logistic.2())
 
 #' @title Obtain a List with the All Functional Models Provided by this Library
 #' @description This function returns a list with the all the models provided by

@@ -1,14 +1,14 @@
 #' @include internalEstimateSampler.R
 
 # a+(b*exp(c*x^d))
-.exp.decay <- function(x, par) par[1] + (par[2] * exp(par[3] * (x ^ par[4])))
+.exp.decay <- function(x, par) par[1L] + (par[2L] * exp(par[3L] * (x ^ par[4L])))
 
 # the gradient
 .exp.decay.gradient <- function(x, par) {
-  x4 <- x^par[4];
-  g2 <- exp(par[3]*x4);
-  g3 <- par[2]*x4*g2;
-  c(1L, g2, g3, par[3]*g3*log(x))
+  x4 <- x^par[4L];
+  g2 <- exp(par[3L]*x4);
+  g3 <- par[2L]*x4*g2;
+  c(1, g2, g3, par[3L]*g3*log(x))
 }
 
 .paramLower.1 <- c(-1000L,  1e-15, -1000L,  1e-15)

@@ -4,7 +4,7 @@
 # Compute the parameter values of a linear function from two point coordinates
 .linear.from.two.points <- function(x1, y1, x2, y2) {
   if(y2 == y1) {
-    return(c(y2, 0));
+    return(c(y2, 0L));
   }
   m <- (y2-y1)/(x2-x1);
   if(is.finite(m)) {
@@ -52,7 +52,7 @@
 
 # The internal constant for linear models
 .linear <- FunctionalModel.new(
-  f = function(x, par) par[1] + (par[2] * x),
+  f = function(x, par) par[1L] + (par[2L] * x),
   paramCount = 2L,
   estimator = .linear.estimator,
   gradient = function(x, par) c(1, x)
