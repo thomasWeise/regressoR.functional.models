@@ -1,7 +1,7 @@
 Package: regressoR.functional.models
 Type: Package
 Title: An R Package Providing an Blueprints and Tools for Functional Models for Regression
-Version: 0.8.5
+Version: 0.8.6
 Author: Dr. Thomas Weise <tweise@hfuu.edu.cn>
 Maintainer: Dr. Thomas Weise <tweise@hfuu.edu.cn>
 Description: In this package, we provide blueprints and tools for defining functional models
@@ -25,8 +25,9 @@ Collate:
     'FunctionalModel.R'
     'utils.R'
     'internalEstimateSampler.R'
-    'logistic.R'
     'exponentialDecay.R'
+    'gompertz.R'
+    'logistic.R'
     'linear.R'
     'quadratic.R'
     'cubic.R'
