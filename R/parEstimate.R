@@ -25,6 +25,10 @@ FunctionalModel.par.estimate <- function(model, x=NULL, y=NULL, par=NULL) {
     return(par);
   }
 
+  # Some sanity check
+  stopifnot(is.null(x) || is.vector(x));
+  stopifnot(is.null(y) || is.vector(y));
+
   # Check if the functional model defines an estimator function and there is
   # data that can be used for estimating.
   if(!(is.null(x) || is.null(y) || is.null(model@estimator))) {
