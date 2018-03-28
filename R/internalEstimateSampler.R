@@ -12,21 +12,32 @@
 # @return a parameter vector or NULL
 #' @importFrom minqa bobyqa
 .solve.np <- function(x, y, paramLower, paramUpper, sampler, f, x.all) {
-  fn <- function(par) sum(abs(f(x, par) - y));
-  for(i in 1:10) {
+
+  fn            <- function(par) sum(abs(f(x, par) - y));
+  best.vec      <- NULL;
+  best.onBounds <- length(x);
+
+  for(i in 1L:15L) {
     .ignore.errors({
       result <- minqa::bobyqa(par=sampler(), fn=fn, lower=paramLower, upper=paramUpper);
       quality <- result$fval;
       if(is.finite(quality) && (quality >= 0)) {
         res <- result$par;
         if(all((res >= paramLower) && (res <= paramUpper) && is.finite(res)) &&
-           all(is.finite(f(x.all, result$par)))) {
-          return(result$par);
+           all(is.finite(f(x.all, res)))) {
+          onBounds <- sum((res-1e-13) <= paramLower) + sum((res+1e-13) >= paramUpper);
+          if(onBounds < 1L) {
+            return(res);
+          }
+          if(onBounds < best.onBounds) {
+            best.vec      <- res;
+            best.onBounds <- onBounds;
+          }
         }
       }
     });
   }
-  return(NULL);
+  return(best.vec);
 }
 
 
@@ -44,17 +55,17 @@
   res <- NULL;
 
   if(len > n) {
-    sres <- sapply(X=1:min(max(3*n, 41L), len-n),
+    sres <- sapply(X=1L:min(max(3L*n, 41L), len-n),
                    FUN=function(i) {
                      sample <- sample.int(n=len, size=n);
-                     return(.solve.np(x[sample], y[sample], paramLower, paramUpper, sampler, f, x));
+                     return(.solve.np(x[sample], y[sample], paramLower, paramUpper, sampler, f, x, repetitions));
                    });
     if( (!(is.null(sres))) && (length(sres)>0L) ) {
       if(is.null(dim(sres))) {
         sres <- sapply(sres[-which(sapply(sres, is.null))], rbind);
       }
       if( (!(is.null(sres))) && (length(sres) > 0L) ) {
-        count <- dim(sres)[2];
+        count <- dim(sres)[2L];
         ranksum <- rep(0, count);
         for(i in 1:n) {
           ranksum <- ranksum + rank(sres[i,]);
