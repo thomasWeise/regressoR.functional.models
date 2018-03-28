@@ -31,6 +31,7 @@ setClassUnion(".regressoR.functional.models.vectorOrNULL", c("numeric","NULL"))
 #'   are required. An element of the vector may be set of \code{NA} if no lower
 #'   upper for that limit is specified (while upper limits are given for other
 #'   parameter values).
+#' @slot name a textual name of the model
 #' @exportClass FunctionalModel
 #' @seealso FunctionalModel.new
 #' @importFrom methods setClass representation prototype
@@ -41,7 +42,8 @@ FunctionalModel <- setClass(
                                   gradient=".regressoR.functional.models.functionOrNULL",
                                   estimator=".regressoR.functional.models.functionOrNULL",
                                   paramLower=".regressoR.functional.models.vectorOrNULL",
-                                  paramUpper=".regressoR.functional.models.vectorOrNULL"),
+                                  paramUpper=".regressoR.functional.models.vectorOrNULL",
+                                  name="character"),
   prototype=prototype(gradient=NULL, estimator=NULL, paramLower=NULL, paramUpper=NULL),
   validity = function(object) {
     # check model function
@@ -137,10 +139,16 @@ FunctionalModel <- setClass(
       }
     }
 
+    if(is.null(object@name) || (nchar(object@name) <= 0L)) {
+      return("Model name must be a non-empty character string.");
+    }
+
     return(TRUE);
   }
 )
 
+# internal function to convert function to string
+.get.name <- function(f) paste0(object=body(f))
 
 
 #' @title Create a new instance of \code{\link{FunctionalModel}}
@@ -166,11 +174,13 @@ FunctionalModel <- setClass(
 #'   are required. An element of the vector may be set of \code{NA} if no lower
 #'   upper for that limit is specified (while upper limits are given for other
 #'   parameter values).
+#' @param name the name of the model
 #' @return the new functional functional model
 #' @export FunctionalModel.new
 #' @importFrom methods new validObject
 FunctionalModel.new <- function(f, paramCount, gradient=NULL, estimator=NULL,
-                                paramLower=NULL, paramUpper=NULL) {
+                                paramLower=NULL, paramUpper=NULL,
+                                name=.get.name(f)) {
 
   if(!(is.null(paramLower))) {
     # Alias negative infinite lower limits to NA.
@@ -192,11 +202,16 @@ FunctionalModel.new <- function(f, paramCount, gradient=NULL, estimator=NULL,
     }
   }
 
+  # setup the name
+  if(is.null(name)) {
+    name <- .get.name(f);
+  }
+
   # Construct the instance.
   result <- methods::new("FunctionalModel",
                         f=f, paramCount=paramCount, gradient=gradient,
                              estimator=estimator, paramLower=paramLower,
-                        paramUpper=paramUpper);
+                        paramUpper=paramUpper, name=name);
   result <- force(result);
   result@f <- force(result@f);
   result@paramCount <- force(result@paramCount);
@@ -204,6 +219,7 @@ FunctionalModel.new <- function(f, paramCount, gradient=NULL, estimator=NULL,
   result@estimator <- force(result@estimator);
   result@paramLower <- force(result@paramLower);
   result@paramUpper <- force(result@paramUpper);
+  result@name <- force(result@name);
   result <- force(result);
   methods::validObject(result);
   return(result);
