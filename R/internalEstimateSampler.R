@@ -18,8 +18,8 @@
     f <- result$fval;
     if(is.finite(f) && (f >= 0)) {
       res <- result$par;
-      if(all((res >= paramLower) && (res <= paramUpper))) {
-        return(c(result$par, 1L/(1L+f)));
+      if(all((res >= paramLower) && (res <= paramUpper) && is.finite(res))) {
+        return(result$par);
       }
     }
   });
@@ -27,66 +27,51 @@
 }
 
 
-#' @importFrom stats weighted.mean
-.wm <- stats::weighted.mean
-.wm <-force(.wm)
-
 # a blueprint estimator for 4 parameters
 # @param x the x coordinates
 # @param x the y coordinates
 # @param paramLower the lower limits
-# @param paramUpper the upper limits
+# @param paramUpper the upper limitns
 # @param sampler a function which can sample a vector within these limits
 # @param f the function whose parameters to find
+# @param n the number of parameters
 # @return a parameter vector or NULL
-.estimate.4p.internal <- function(x, y, paramLower, paramUpper, sampler, f) {
+.estimate.internal <- function(x, y, paramLower, paramUpper, sampler, f, n) {
   len <- length(x);
   res <- NULL;
 
-  if(len > 4L) {
-    sres<-sapply(X=1:min(30L, len-4L),
-                 FUN=function(x) {
-                   sample <- sample.int(n=len, size=4L);
-                   .solve.np(x[sample], y[sample], paramLower, paramUpper, sampler(), f);
-                 });
+  if(len > n) {
+    sres <- sapply(X=1:min(max(3*n, 41L), len-n),
+                   FUN=function(i) {
+                     sample <- sample.int(n=len, size=n);
+                     return(.solve.np(x[sample], y[sample], paramLower, paramUpper, sampler(), f));
+                   });
     if( (!(is.null(sres))) && (length(sres)>0L) ) {
       if(is.null(dim(sres))) {
         sres <- sapply(sres[-which(sapply(sres, is.null))], rbind);
       }
-      if( (!(is.null(sres))) && (length(sres)>0L) ) {
-        res <- c(.wm(sres[1,], sres[5,]),
-                 .wm(sres[2,], sres[5,]),
-                 .wm(sres[3,], sres[5,]),
-                 .wm(sres[4,], sres[5,]));
-        if(is.finite(res[1L]) && is.finite(res[2L]) && is.finite(res[3L]) && is.finite(res[4L])) {
-          return(res);
+      if( (!(is.null(sres))) && (length(sres) > 0L) ) {
+        count <- dim(sres)[2];
+        ranksum <- rep(0, count);
+        for(i in 1:n) {
+          ranksum <- ranksum + rank(sres[i,]);
         }
-
-        res <- c(mean(sres[1,], trim=0.1),
-                 mean(sres[2,], trim=0.1),
-                 mean(sres[3,], trim=0.1),
-                 mean(sres[4,], trim=0.1));
-        if(is.finite(res[1L]) && is.finite(res[2L]) && is.finite(res[3L]) && is.finite(res[4L])) {
-          return(res);
-        }
-        res <- rowMeans(sres[1:4,]);
-        if(is.finite(res[1L]) && is.finite(res[2L]) && is.finite(res[3L]) && is.finite(res[4L])) {
-          return(res);
-        }
+        res <- sres[, order(ranksum)[count / 2L]];
+        return(res);
       }
     }
   }
 
-  if(len >= 4L) {
-    sample <- c(1L, len/3L+1L, (2L*len)/3L+1L, len);
+  if(len >= n) {
+    sample <- 1L + 0L:(n-1L) * (len - 1L) / (n - 1L);
     res <- .solve.np(x[sample], y[sample], paramLower, paramUpper, sampler(), f)
     if(!is.null(res)) {
-      return(res);
+      return(res[1:n]);
     }
-    sample <- c(1L, 2L, 3L, 4L);
+    sample <- 1:n;
     res <- .solve.np(x[sample], y[sample], paramLower, paramUpper, sampler(), f)
     if(!is.null(res)) {
-      return(res);
+      return(res[1:n]);
     }
   }
 

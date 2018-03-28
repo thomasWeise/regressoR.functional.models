@@ -27,16 +27,16 @@
                                                 rnorm(n=1))
 
 .expLogLinear.estimate.1 <- function(x, y)
-  .estimate.4p.internal(x, y, .expLogLinear.paramLower.1,
-                              .expLogLinear.paramUpper.1,
-                              .expLogLinear.sampler.1,
-                              .expLogLinear)
+  .estimate.internal(x, y, .expLogLinear.paramLower.1,
+                           .expLogLinear.paramUpper.1,
+                           .expLogLinear.sampler.1,
+                           .expLogLinear, 4L)
 
 .expLogLinear.estimate.2 <- function(x, y)
-  .estimate.4p.internal(x, y, .expLogLinear.paramLower.2,
-                              .expLogLinear.paramUpper.2,
-                              .expLogLinear.sampler.2,
-                              .expLogLinear)
+  .estimate.internal(x, y, .expLogLinear.paramLower.2,
+                           .expLogLinear.paramUpper.2,
+                           .expLogLinear.sampler.2,
+                           .expLogLinear, 4L)
 
 
 

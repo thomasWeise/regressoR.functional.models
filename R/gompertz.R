@@ -31,16 +31,16 @@
 #                                       -abs(rnorm(n=1)) - 1e-15)
 
 .gompertz.estimate.1 <- function(x, y)
-  .estimate.4p.internal(x, y, .gompertz.paramLower.1,
-                              .gompertz.paramUpper.1,
-                              .gompertz.sampler.1,
-                              .gompertz)
+  .estimate.internal(x, y, .gompertz.paramLower.1,
+                           .gompertz.paramUpper.1,
+                           .gompertz.sampler.1,
+                           .gompertz, 4L)
 
 .gompertz.estimate.2 <- function(x, y)
-  .estimate.4p.internal(x, y, .gompertz.paramLower.2,
-                              .gompertz.paramUpper.2,
-                              .gompertz.sampler.2,
-                              .gompertz)
+  .estimate.internal(x, y, .gompertz.paramLower.2,
+                           .gompertz.paramUpper.2,
+                           .gompertz.sampler.2,
+                           .gompertz, 4L)
 
 
 

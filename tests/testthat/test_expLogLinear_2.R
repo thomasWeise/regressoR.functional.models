@@ -23,7 +23,7 @@ test_that("Test FunctionalModel.expLogLinear.2", {
 
   expLogLinear <- function(x, par) { par[1L] + par[2L]*exp(par[3L]*log(x+par[4L])) }
   grad  <- function(x, par) { c(1,
-                                (par[4L]+x)^par[3L],
+                               (par[4L]+x)^par[3L],
                                 par[2L]*(par[4L]+x)^par[3L]*log(x+par[4L]),
                                 par[2L]*par[3L]*(par[4L]+x)^(par[3L]-1)) }
   par<-c(1, 3, -0.4, 2 );

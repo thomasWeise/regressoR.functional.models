@@ -25,16 +25,16 @@
                                                -abs(rnorm(n=1)) - 1e-15)
 
 .exponentialDecay.estimate.1 <- function(x, y)
-  .estimate.4p.internal(x, y, .exponentialDecay.paramLower.1,
-                              .exponentialDecay.paramUpper.1,
-                              .exponentialDecay.sampler.1,
-                              .exponentialDecay)
+  .estimate.internal(x, y, .exponentialDecay.paramLower.1,
+                           .exponentialDecay.paramUpper.1,
+                           .exponentialDecay.sampler.1,
+                           .exponentialDecay, 4L)
 
 .exponentialDecay.estimate.2 <- function(x, y)
-  .estimate.4p.internal(x, y, .exponentialDecay.paramLower.2,
-                              .exponentialDecay.paramUpper.2,
-                              .exponentialDecay.sampler.2,
-                              .exponentialDecay)
+  .estimate.internal(x, y, .exponentialDecay.paramLower.2,
+                           .exponentialDecay.paramUpper.2,
+                           .exponentialDecay.sampler.2,
+                           .exponentialDecay, 4L)
 
 
 

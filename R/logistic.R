@@ -28,16 +28,16 @@
                                        -abs(rnorm(n=1)) - 1e-15)
 
 .logistic.estimate.1 <- function(x, y)
-  .estimate.4p.internal(x, y, .logistic.paramLower.1,
-                              .logistic.paramUpper.1,
-                              .logistic.sampler.1,
-                              .logistic)
+  .estimate.internal(x, y, .logistic.paramLower.1,
+                           .logistic.paramUpper.1,
+                           .logistic.sampler.1,
+                           .logistic, 4L)
 
 .logistic.estimate.2 <- function(x, y)
-  .estimate.4p.internal(x, y, .logistic.paramLower.2,
-                              .logistic.paramUpper.2,
-                              .logistic.sampler.2,
-                              .logistic)
+  .estimate.internal(x, y, .logistic.paramLower.2,
+                           .logistic.paramUpper.2,
+                           .logistic.sampler.2,
+                           .logistic, 4L)
 
 
 # The internal constant for the first variant of the logistic model

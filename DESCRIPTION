@@ -23,10 +23,10 @@ Suggests: testthat (>= 2.0.0),
           roxygen2 (>= 6.0.1)
 Collate: 
     'FunctionalModel.R'
-    'mlp.R'
-    'mlpDefault.R'
     'utils.R'
     'internalEstimateSampler.R'
+    'mlp.R'
+    'mlpDefault.R'
     'expLogLinear.R'
     'exponentialDecay.R'
     'gompertz.R'
