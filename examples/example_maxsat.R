@@ -15,23 +15,66 @@ models  <- regressoR.functional.models::FunctionalModel.all();
 count   <- length(models);
 colors  <- c("red", "blue", "green", "orange", "darkgreen", "violet",
              "cyan", "gold", "darkblue", "darkred", "darkmagenta",
-             "aquamarine", "tan");
+             "aquamarine", "gray", "tan", "darkgray");
 if(length(colors) < count) {
-  colors <- unique(unlist(c(colors, palette(rainbow(count)))));
+  colors <- unique(unlist(c(colors, rainbow(count))));
   if(length(colors) > count) {
     colors <- colors[1:count];
   }
 }
+if(length(colors) > count) { colors <- colors[1:count]; }
+names <- sapply(models, as.character);
+
+legend("topright",
+        text.col=as.vector(colors),
+        legend=names);
 
 # prepare the metric
-metric  <- regressoR.quality::RegressionQualityMetric.default(data.x, data.y);
+metric    <- regressoR.quality::RegressionQualityMetric.default(data.x, data.y);
+qualities <- NULL;
+times     <- NULL;
 
 # add the lines
-for(j in 1L:50L) {
-  for(i in 1L:count) {
-    result <- regressoR.functional::FunctionalModel.fit(metric, models[[i]]);
-    if(!(is.null(result))) {
-      lines(log(data.x), result@f(data.x), col=colors[[i]]);
+for(i in 1L:100L) {
+  results <- lapply(X=models, FUN=function(m) {
+      time <- system.time(result <- regressoR.functional::FunctionalModel.fit(metric, m))[3];
+      return(list(time=time, result=result));
+    });
+
+  # plot the lines
+  for(j in 1:count) {
+    if(!(is.null(results[[j]]$result))) {
+      lines(log(data.x), results[[j]]$result@f(data.x), col=colors[[j]]);
     }
   }
+
+  # update qualities list
+  .temp   <- vapply(X=results,
+                    FUN=function(res) if(is.null(res$result)) +Inf else res$result@quality,
+                    FUN.VALUE = +Inf);
+  if(is.null(qualities)) { qualities <- matrix(.temp, nrow=1, ncol=count); }
+  else                   { qualities <- rbind(qualities, .temp); }
+
+  # update measured times
+  .temp <- vapply(X=results,
+                  FUN=function(res) res$time,
+                  FUN.VALUE = +Inf);
+  if(is.null(times)) { times <- matrix(.temp, nrow=1, ncol=count); }
+  else               { times <- rbind(times, .temp); }
+
+  cat("\n######## Iteration ", i, "########\n");
+
+  prmatrix(
+    rbind(c("model", "|", "q/med", "q/q.1", "q/q.9", "|", "q/count", "|", "t/med", "t/q.1", "t/q.9"),
+    t(as.matrix(sapply(X=1:count,
+           FUN=function(i) {
+             c(names[[i]],
+               "|",
+               round(as.vector(unname(unlist(quantile(x=qualities[,i], probs=c(0.5, 0.1, 0.9))))), 3),
+               "|",
+               sum(is.finite(qualities[,i])),
+               "|",
+               round(as.vector(unname(unlist(quantile(x=times[,i], probs=c(0.5, 0.1, 0.9))))), 3))
+           })))),
+    quote = FALSE, rowlab=rep("", count+1L), collab=rep("", 11));
 }
