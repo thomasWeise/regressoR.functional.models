@@ -58,7 +58,7 @@ test_that(".estimate.internal (2)", {
   expect_true(!(is.null(res)));
   expect_length(res, n);
   for(i in 1:n) {
-    expect_lt(abs(res[i]-par[i]), 10);
+    expect_lt(abs(res[i]-par[i]), 20);
   }
 })
 
