@@ -38,6 +38,8 @@ parameter values).}
 are required. An element of the vector may be set of \code{NA} if no lower
 upper for that limit is specified (while upper limits are given for other
 parameter values).}
+
+\item{\code{name}}{a textual name of the model}
 }}
 
 \seealso{

@@ -92,7 +92,8 @@
   f = function(x, par) par[1] + (x * (par[2] + (x * (par[3] + (x * par[4]))))),
   paramCount = 4L,
   estimator = .cubic.estimator,
-  gradient=function(x, par) c(1, x, x*x, x*x*x)
+  gradient=function(x, par) c(1, x, x*x, x*x*x),
+  name="Cubic Function"
 )
 
 #' @title Obtain the Simple Cubic Model \code{y = f(x) = a + b*x + c*x^2 + d*x^3}

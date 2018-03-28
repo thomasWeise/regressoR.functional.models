@@ -55,7 +55,8 @@
   f = function(x, par) par[1L] + (par[2L] * x),
   paramCount = 2L,
   estimator = .linear.estimator,
-  gradient = function(x, par) c(1, x)
+  gradient = function(x, par) c(1, x),
+  name       = "Linear Function"
 )
 
 #' @title Obtain the Simple Linear Model \code{y = f(x) = a+b*x}

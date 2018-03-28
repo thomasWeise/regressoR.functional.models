@@ -46,7 +46,8 @@
   paramCount = 4L,
   estimator  = .expLogLinear.estimate.1,
   paramLower = c(NA, 1e-15,     NA, NA),
-  paramUpper = c(NA,    NA, -1e-15, NA)
+  paramUpper = c(NA,    NA, -1e-15, NA),
+  name       = "Exponential Log-Linear Model (1)"
 )
 
 # The internal constant for the second variant of the exponential log-linear model
@@ -56,7 +57,8 @@
   paramCount = 4L,
   estimator  = .expLogLinear.estimate.2,
   paramLower = c(NA,     NA, 1e-15, NA),
-  paramUpper = c(NA, -1e-15,    NA, NA)
+  paramUpper = c(NA, -1e-15,    NA, NA),
+  name       = "Exponential Log-Linear Model (2)"
 )
 
 #' @title Obtain the First Variant of the Exponential Log-Linear Model

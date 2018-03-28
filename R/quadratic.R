@@ -63,8 +63,9 @@
 .quadratic <- FunctionalModel.new(
   f = function(x, par) par[1L] + (x * (par[2L] + (x * par[3L]))),
   paramCount = 3L,
-  estimator = .quadratic.estimator,
-  gradient=function(x, par) c(1, x, x*x)
+  estimator  = .quadratic.estimator,
+  gradient   = function(x, par) c(1, x, x*x),
+  name       = "Quadratic Function"
 )
 
 #' @title Obtain the Simple Quadratic Model \code{y = f(x) = a + b*x + c*x^2}

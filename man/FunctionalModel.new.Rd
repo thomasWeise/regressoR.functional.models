@@ -5,7 +5,7 @@
 \title{Create a new instance of \code{\link{FunctionalModel}}}
 \usage{
 FunctionalModel.new(f, paramCount, gradient = NULL, estimator = NULL,
-  paramLower = NULL, paramUpper = NULL)
+  paramLower = NULL, paramUpper = NULL, name = .get.name(f))
 }
 \arguments{
 \item{f}{the model function, taking as parameters a value \code{x} followed
@@ -30,6 +30,8 @@ parameter values).}
 are required. An element of the vector may be set of \code{NA} if no lower
 upper for that limit is specified (while upper limits are given for other
 parameter values).}
+
+\item{name}{the name of the model}
 }
 \value{
 the new functional functional model
