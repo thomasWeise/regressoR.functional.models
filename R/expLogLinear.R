@@ -10,7 +10,7 @@
   c(1,
     xdc,
     par[2L]*xdc*log(xd),
-    par[3L]*par[2L]*(xd)^(par[3L]-1))
+    par[2L]*par[3L]*(xd^(par[3L]-1)))
 }
 
 .expLogLinear.paramLower.1 <- c(-1000L,  1e-15, -1000L, -1000L)
@@ -37,7 +37,6 @@
                            .expLogLinear.paramUpper.2,
                            .expLogLinear.sampler.2,
                            .expLogLinear, 4L)
-
 
 
 # The internal constant for the first variant of the exponential log-linear model

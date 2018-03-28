@@ -3,26 +3,29 @@
 
 # try to find estimates for n parameters by solving a set of n equations
 # @param x the x coordinates of the n equations
-# @param x the y coordinates of the n equations
+# @param y the y coordinates of the n equations
 # @param paramLower the lower limits
 # @param paramUpper the upper limits
-# @param par the starting oint
 # @param f the function whose parameters to find
+# @param sampler the sampler
+# @param x.all all code
 # @return a parameter vector or NULL
 #' @importFrom minqa bobyqa
-.solve.np <- function(x, y, paramLower, paramUpper, par, f) {
-  .ignore.errors({
-    result <- minqa::bobyqa(par=par,
-                            fn=function(par) sum(abs(f(x, par) - y)),
-                            lower=paramLower, upper=paramUpper);
-    f <- result$fval;
-    if(is.finite(f) && (f >= 0)) {
-      res <- result$par;
-      if(all((res >= paramLower) && (res <= paramUpper) && is.finite(res))) {
-        return(result$par);
+.solve.np <- function(x, y, paramLower, paramUpper, sampler, f, x.all) {
+  fn <- function(par) sum(abs(f(x, par) - y));
+  for(i in 1:10) {
+    .ignore.errors({
+      result <- minqa::bobyqa(par=sampler(), fn=fn, lower=paramLower, upper=paramUpper);
+      quality <- result$fval;
+      if(is.finite(quality) && (quality >= 0)) {
+        res <- result$par;
+        if(all((res >= paramLower) && (res <= paramUpper) && is.finite(res)) &&
+           all(is.finite(f(x.all, result$par)))) {
+          return(result$par);
+        }
       }
-    }
-  });
+    });
+  }
   return(NULL);
 }
 
@@ -44,7 +47,7 @@
     sres <- sapply(X=1:min(max(3*n, 41L), len-n),
                    FUN=function(i) {
                      sample <- sample.int(n=len, size=n);
-                     return(.solve.np(x[sample], y[sample], paramLower, paramUpper, sampler(), f));
+                     return(.solve.np(x[sample], y[sample], paramLower, paramUpper, sampler, f, x));
                    });
     if( (!(is.null(sres))) && (length(sres)>0L) ) {
       if(is.null(dim(sres))) {
@@ -64,14 +67,14 @@
 
   if(len >= n) {
     sample <- 1L + 0L:(n-1L) * (len - 1L) / (n - 1L);
-    res <- .solve.np(x[sample], y[sample], paramLower, paramUpper, sampler(), f)
+    res <- .solve.np(x[sample], y[sample], paramLower, paramUpper, sampler, f)
     if(!is.null(res)) {
-      return(res[1:n]);
+      return(res);
     }
     sample <- 1:n;
-    res <- .solve.np(x[sample], y[sample], paramLower, paramUpper, sampler(), f)
+    res <- .solve.np(x[sample], y[sample], paramLower, paramUpper, sampler, f)
     if(!is.null(res)) {
-      return(res[1:n]);
+      return(res);
     }
   }
 

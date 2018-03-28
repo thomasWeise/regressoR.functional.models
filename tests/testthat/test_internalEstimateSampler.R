@@ -12,7 +12,8 @@ test_that(".solve.np", {
   paramUpper <- c( 1000L,  1000L);
   n          <- length(par);
 
-  res <- .solve.np(x, y, paramLower, paramUpper, sampler(), f);
+  res <- .solve.np(x, y, paramLower, paramUpper, sampler, f, x);
+
   expect_true(!(is.null(res)));
   expect_length(res, n);
   for(i in 1:n) {
@@ -36,8 +37,8 @@ test_that(".estimate.internal (1)", {
   res <- .estimate.internal(x, y, paramLower, paramUpper, sampler, f, n);
   expect_true(!(is.null(res)));
   expect_length(res, 2);
-  expect_lt(abs(res[1]-par[1]), 0.5);
-  expect_lt(abs(res[2]-par[2]), 0.5);
+  expect_lt(abs(res[1]-par[1]), 1);
+  expect_lt(abs(res[2]-par[2]), 1);
 })
 
 
