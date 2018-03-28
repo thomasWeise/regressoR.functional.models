@@ -17,7 +17,7 @@
   best.vec      <- NULL;
   best.onBounds <- length(x);
 
-  for(i in 1L:15L) {
+  for(i in 1L:13L) {
     .ignore.errors({
       result <- minqa::bobyqa(par=sampler(), fn=fn, lower=paramLower, upper=paramUpper);
       quality <- result$fval;
@@ -58,7 +58,7 @@
     sres <- sapply(X=1L:min(max(3L*n, 41L), len-n),
                    FUN=function(i) {
                      sample <- sample.int(n=len, size=n);
-                     return(.solve.np(x[sample], y[sample], paramLower, paramUpper, sampler, f, x, repetitions));
+                     return(.solve.np(x[sample], y[sample], paramLower, paramUpper, sampler, f, x));
                    });
     if( (!(is.null(sres))) && (length(sres)>0L) ) {
       if(is.null(dim(sres))) {
