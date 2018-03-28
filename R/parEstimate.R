@@ -25,25 +25,6 @@ FunctionalModel.par.estimate <- function(model, x=NULL, y=NULL, par=NULL) {
     return(par);
   }
 
-  count <- model@paramCount;
-
-  # It seems as if we cannot just use off-the-shelf Gaussian random numbers.
-  # Obtain the lower boundaries
-  paramLower <- model@paramLower;
-  if(is.null(paramLower)) {
-    paramLower <- rep(NA, count);
-  } else {
-    paramLower[!is.finite(paramLower)] <- NA;
-  }
-
-  # Obtain the lower boundaries
-  paramUpper <- model@paramUpper;
-  if(is.null(paramUpper)) {
-    paramUpper <- rep(NA, count);
-  } else {
-    paramUpper[!is.finite(paramUpper)] <- NA;
-  }
-
   # Check if the functional model defines an estimator function and there is
   # data that can be used for estimating.
   if(!(is.null(x) || is.null(y) || is.null(model@estimator))) {
@@ -55,6 +36,8 @@ FunctionalModel.par.estimate <- function(model, x=NULL, y=NULL, par=NULL) {
       return(estimate);
     }
   }
+
+  count <- model@paramCount;
 
   # OK, let's see whether we can use Gaussian random numbers for initialization.
   if( (is.null(model@paramLower) || all(model@paramLower[!is.na(model@paramLower)] < 1)) &&
@@ -68,6 +51,22 @@ FunctionalModel.par.estimate <- function(model, x=NULL, y=NULL, par=NULL) {
         return(estimate);
       }
     }
+  }
+
+  # Setup the lower boundaries
+  paramLower <- model@paramLower;
+  if(is.null(paramLower)) {
+    paramLower <- rep(NA, count);
+  } else {
+    paramLower[!is.finite(paramLower)] <- NA;
+  }
+
+  # Obtain the upper boundaries
+  paramUpper <- model@paramUpper;
+  if(is.null(paramUpper)) {
+    paramUpper <- rep(NA, count);
+  } else {
+    paramUpper[!is.finite(paramUpper)] <- NA;
   }
 
   # This function is used to sample the elements of the estimate vector.
