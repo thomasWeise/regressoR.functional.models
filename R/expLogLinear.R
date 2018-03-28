@@ -28,9 +28,9 @@
 
 .expLogLinear.estimate.1 <- function(x, y)
   .estimate.internal(x, y, .expLogLinear.paramLower.1,
-                     .expLogLinear.paramUpper.1,
-                     .expLogLinear.sampler.1,
-                     .expLogLinear, 4L)
+                           .expLogLinear.paramUpper.1,
+                           .expLogLinear.sampler.1,
+                           .expLogLinear, 4L)
 
 .expLogLinear.estimate.2 <- function(x, y)
   .estimate.internal(x, y, .expLogLinear.paramLower.2,
