@@ -12,9 +12,11 @@ test_that("Test FunctionalModel constructor", {
   expect_identical(ob1@f, f1)
   expect_identical(ob1@paramCount, 1L)
   expect_identical(ob1@name, "a")
+  expect_identical(ob1@name, as.character(ob1))
   expect_identical(ob2@f, f2)
   expect_identical(ob2@paramCount, 3L)
   expect_identical(ob2@name, "b")
+  expect_identical(ob2@name, as.character(ob2))
   f3<-function(x) { x }
   grad<-function(x, par) { x*par }
   expect_error(validObject(new ("FunctionalModel", f=f3, paramCount=1L)))
@@ -69,14 +71,16 @@ test_that("Test FunctionalModel.new ", {
   f1<-function(x, par) { x }
   f2<-function(x, par) { x*par[1] }
   ob1<-FunctionalModel.new(f=f1, paramCount=1L, name="a")
-  ob2<-FunctionalModel.new(f=f2, paramCount=3L, name="b")
+  ob2<-FunctionalModel.new(f=f2, paramCount=3L)
   methods::validObject(ob1)
   methods::validObject(ob2)
   expect_identical(ob1@f, f1)
   expect_identical(ob1@name, "a")
+  expect_identical(ob1@name, as.character(ob1))
   expect_identical(ob1@paramCount, 1L)
   expect_identical(ob2@f, f2)
-  expect_identical(ob2@name, "b")
+  expect_identical(ob2@name, "x * par[1]")
+  expect_identical(ob2@name, as.character(ob2))
   expect_identical(ob2@paramCount, 3L)
   f3<-function(x) { x }
   grad<-function(x, par) { x*par }

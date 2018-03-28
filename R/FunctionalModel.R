@@ -148,7 +148,17 @@ FunctionalModel <- setClass(
 )
 
 # internal function to convert function to string
-.get.name <- function(f) paste0(object=body(f))
+.get.name <- function(f) {
+  ret <- paste(trimws(deparse(body(f))), collapse="");
+  l   <- nchar(ret);
+  while( (l > 2L) &&
+         identical(substr(ret, 1L, 1L), "{") &&
+         identical(substr(ret,  l,  l), "}")) {
+    ret <- (trimws(substr(ret, 2L, l-1L)));
+    l   <- nchar(ret);
+  }
+  return(ret);
+}
 
 
 #' @title Create a new instance of \code{\link{FunctionalModel}}
@@ -224,3 +234,13 @@ FunctionalModel.new <- function(f, paramCount, gradient=NULL, estimator=NULL,
   methods::validObject(result);
   return(result);
 }
+
+#' @title Convert a \code{\link{FunctionalModel}} to a String
+#' @description the \code{as.character} implementation for
+#'   \code{\link{FunctionalModel}}
+#' @param x the object
+#' @return the name of the object
+#' @importFrom methods setMethod
+#' @name as.character
+#' @aliases as.character,FunctionalModel-method
+methods::setMethod("as.character", "FunctionalModel", function (x) x@name)

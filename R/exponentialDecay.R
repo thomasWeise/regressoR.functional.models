@@ -45,7 +45,8 @@
   paramCount = 4L,
   estimator  = .exponentialDecay.estimate.1,
   paramLower = c(NA, 1e-15,     NA, 1e-15),
-  paramUpper = c(NA,    NA, -1e-15,    NA)
+  paramUpper = c(NA,    NA, -1e-15,    NA),
+  name       = "Exponential Decay (1)"
 )
 
 # The internal constant for the second variant of the exponential decay model
@@ -54,7 +55,8 @@
   gradient   = .exponentialDecay.gradient,
   paramCount = 4L,
   estimator  = .exponentialDecay.estimate.2,
-  paramUpper = c(NA, -1e-15, -1e-15, -1e-15)
+  paramUpper = c(NA, -1e-15, -1e-15, -1e-15),
+  name       = "Exponential Decay (2)"
 )
 
 #' @title Obtain the First Variant of the Generalized Exponential Decay Model

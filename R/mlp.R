@@ -119,7 +119,9 @@ FunctionalModel.mlp <- function(layers, func="tanh") {
   }
   .estimator <- force(.estimator);
 
-  FunctionalModel.new(f = f,
+  FunctionalModel.new(f          = f,
                       paramCount = nextWeight,
-                      estimator = .estimator);
+                      estimator  = .estimator,
+                      name       = paste0("MLP[", func, "-",
+                                   paste(layers, collapse="-"), "]"));
 }

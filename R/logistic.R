@@ -47,7 +47,8 @@
   gradient   = .logistic.gradient,
   paramCount = 4L,
   estimator  = .logistic.estimate.1,
-  paramLower = c(NA, 1e-15,  1e-15, 1e-15)
+  paramLower = c(NA, 1e-15,  1e-15, 1e-15),
+  name       = "Logistic Model (1)"
 )
 
 # The internal constant for the second variant of the logistic model
@@ -58,7 +59,8 @@
   paramCount = 4L,
   estimator  = .logistic.estimate.2,
   paramLower = c(NA, NA, 1e-15, NA),
-  paramUpper = c(NA, -1e-15, NA, -1e-15)
+  paramUpper = c(NA, -1e-15, NA, -1e-15),
+  name       = "Logistic Model (1)"
 )
 
 #' @title Obtain the First Variant of the Logistic Model

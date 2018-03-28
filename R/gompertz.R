@@ -51,7 +51,8 @@
   paramCount = 4L,
   estimator  = .gompertz.estimate.1,
   paramLower = c(NA, 1e-15,     NA, 1e-15),
-  paramUpper = c(NA,    NA, -1e-15,    NA)
+  paramUpper = c(NA,    NA, -1e-15,    NA),
+  name       = "Gompertz Model (1)"
 )
 
 # The internal constant for the second variant of the Gompertz model
@@ -60,7 +61,8 @@
   gradient   = .gompertz.gradient,
   paramCount = 4L,
   estimator  = .gompertz.estimate.2,
-  paramUpper = c(NA, -1e-15, -1e-15, -1e-15)
+  paramUpper = c(NA, -1e-15, -1e-15, -1e-15),
+  name       = "Gompertz Model (2)"
 )
 
 #' @title Obtain the First Variant of the Gompertz Model
