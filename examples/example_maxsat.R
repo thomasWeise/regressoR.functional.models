@@ -58,7 +58,10 @@ for(i in 1L:100L) {
 
       # plot the lines
       if(!(is.null(result))) {
+        cat(models[[m]]@name, ": quality", result@quality, " in ", time, "s, par=c(", paste(result@par, sep="", collapse=", "), ")\n");
         lines(log(data.x), result@f(data.x), col=colors[[m]]);
+      } else {
+        cat(models[[m]]@name, ": failed after ", time, "s", "\n");
       }
 
       return(list(time=time, result=result));

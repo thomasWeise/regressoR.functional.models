@@ -47,7 +47,7 @@ FunctionalModel.par.estimate <- function(model, x=NULL, y=NULL, par=NULL) {
   if( (is.null(model@paramLower) || all(model@paramLower[!is.na(model@paramLower)] < 1)) &&
       (is.null(model@paramUpper) || all(model@paramUpper[!is.na(model@paramUpper)] > (-1))) ) {
     # It seems that there is a reasonable chance for that, so let us try 5*count times.
-    for(i in 1:5*count) {
+    for(i in 1L:(5L*count)) {
       # Generate the Gaussian distributed random vector.
       estimate <- stats::rnorm(n=count);
       if(FunctionalModel.par.check(model, estimate)) {

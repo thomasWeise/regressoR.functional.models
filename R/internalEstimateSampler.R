@@ -11,13 +11,17 @@
 # @param x.all all code
 # @return a parameter vector or NULL
 #' @importFrom minqa bobyqa
-.solve.np <- function(x, y, paramLower, paramUpper, sampler, f, x.all) {
+.solve.np <- function(x.all, y.all, paramLower, paramUpper, sampler, f, len, n) {
 
-  fn            <- function(par) sum(abs(f(x, par) - y));
   best.vec      <- NULL;
   best.onBounds <- length(x);
 
-  for(i in 1L:13L) {
+  for(i in 1L:23L) {
+    sample <- sample.int(n=len, size=n);
+    x  <- x.all[sample];
+    y  <- y.all[sample];
+    fn <- function(par) sum(abs(f(x, par) - y));
+
     .ignore.errors({
       result <- minqa::bobyqa(par=sampler(), fn=fn, lower=paramLower, upper=paramUpper);
       quality <- result$fval;
@@ -55,10 +59,9 @@
   res <- NULL;
 
   if(len > n) {
-    sres <- sapply(X=1L:min(max(3L*n, 41L), len-n),
+    sres <- sapply(X=1L:min(11L, len-n),
                    FUN=function(i) {
-                     sample <- sample.int(n=len, size=n);
-                     return(.solve.np(x[sample], y[sample], paramLower, paramUpper, sampler, f, x));
+                     return(.solve.np(x, y, paramLower, paramUpper, sampler, f, len, n));
                    });
     if( (!(is.null(sres))) && (length(sres)>0L) ) {
       if(is.null(dim(sres))) {
