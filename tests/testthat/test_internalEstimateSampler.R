@@ -12,7 +12,7 @@ test_that(".solve.np", {
   paramUpper <- c( 1000L,  1000L);
   n          <- length(par);
 
-  res <- .solve.np(x, y, paramLower, paramUpper, sampler, f, x);
+  res <- .solve.np(x, y, paramLower, paramUpper, sampler, f, length(x), n);
 
   expect_true(!(is.null(res)));
   expect_length(res, n);

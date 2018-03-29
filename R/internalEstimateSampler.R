@@ -2,19 +2,21 @@
 
 
 # try to find estimates for n parameters by solving a set of n equations
-# @param x the x coordinates of the n equations
-# @param y the y coordinates of the n equations
+# @param x.all the x coordinates of the n equations
+# @param y.all the y coordinates of the n equations
 # @param paramLower the lower limits
 # @param paramUpper the upper limits
 # @param f the function whose parameters to find
 # @param sampler the sampler
 # @param x.all all code
+# @param len the length of x.all
+# @param n the number of points to pick
 # @return a parameter vector or NULL
 #' @importFrom minqa bobyqa
 .solve.np <- function(x.all, y.all, paramLower, paramUpper, sampler, f, len, n) {
 
   best.vec      <- NULL;
-  best.onBounds <- length(x);
+  best.onBounds <- len;
 
   for(i in 1L:23L) {
     sample <- sample.int(n=len, size=n);
