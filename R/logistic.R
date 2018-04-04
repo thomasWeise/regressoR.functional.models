@@ -60,7 +60,7 @@
   estimator  = .logistic.estimate.2,
   paramLower = c(NA, NA, 1e-15, NA),
   paramUpper = c(NA, -1e-15, NA, -1e-15),
-  name       = "Logistic Model (1)"
+  name       = "Logistic Model (2)"
 )
 
 #' @title Obtain the First Variant of the Logistic Model
