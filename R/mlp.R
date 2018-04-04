@@ -97,7 +97,7 @@ FunctionalModel.mlp <- function(layers, func="tanh") {
   f <- force(f);
 
   # The estimator function aims at generating reasonable start values for the parameters.
-  # The bias of the input neuron is guessed to be around -half of the mean of
+  # The bias of the input neuron is guessed to be around -1*half of the mean of
   # the x values so we maybe get stuff centered around zero. The bias of the
   # output is guessed to be something like half the mean of the y values,
   # because we assume that the result will be centered aroung zero in first
