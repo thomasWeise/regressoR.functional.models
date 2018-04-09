@@ -1,6 +1,5 @@
 #' @include FunctionalModel.R
 #' @include linear.R
-#' @include utils.R
 
 # Compute the parameter values of a quadratic function from three points
 .quadratic.from.three.points <- function(x1, y1, x2, y2, x3, y3) {

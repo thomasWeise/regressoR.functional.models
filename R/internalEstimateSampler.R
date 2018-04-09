@@ -1,6 +1,3 @@
-#' @include utils.R
-
-
 # try to find estimates for n parameters by solving a set of n equations
 # @param x.all the x coordinates of the n equations
 # @param y.all the y coordinates of the n equations
@@ -13,6 +10,7 @@
 # @param n the number of points to pick
 # @return a parameter vector or NULL
 #' @importFrom minqa bobyqa
+#' @importFrom utilizeR ignoreErrors
 .solve.np <- function(x.all, y.all, paramLower, paramUpper, sampler, f, len, n) {
 
   best.vec      <- NULL;
@@ -24,7 +22,7 @@
     y  <- y.all[sample];
     fn <- function(par) sum(abs(f(x, par) - y));
 
-    .ignore.errors({
+    ignoreErrors({
       result <- minqa::bobyqa(par=sampler(), fn=fn, lower=paramLower, upper=paramUpper);
       quality <- result$fval;
       if(is.finite(quality) && (quality >= 0)) {

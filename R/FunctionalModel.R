@@ -147,19 +147,6 @@ FunctionalModel <- setClass(
   }
 )
 
-# internal function to convert function to string
-.get.name <- function(f) {
-  ret <- paste(trimws(deparse(body(f))), collapse="");
-  l   <- nchar(ret);
-  while( (l > 2L) &&
-         identical(substr(ret, 1L, 1L), "{") &&
-         identical(substr(ret,  l,  l), "}")) {
-    ret <- (trimws(substr(ret, 2L, l-1L)));
-    l   <- nchar(ret);
-  }
-  return(ret);
-}
-
 
 #' @title Create a new instance of \code{\link{FunctionalModel}}
 #' @description Instantiate the class \code{\link{FunctionalModel}}.
@@ -188,9 +175,10 @@ FunctionalModel <- setClass(
 #' @return the new functional functional model
 #' @export FunctionalModel.new
 #' @importFrom methods new validObject
+#' @importFrom utilizeR functionToString
 FunctionalModel.new <- function(f, paramCount, gradient=NULL, estimator=NULL,
                                 paramLower=NULL, paramUpper=NULL,
-                                name=.get.name(f)) {
+                                name=functionToString(f)) {
 
   if(!(is.null(paramLower))) {
     # Alias negative infinite lower limits to NA.
@@ -214,7 +202,7 @@ FunctionalModel.new <- function(f, paramCount, gradient=NULL, estimator=NULL,
 
   # setup the name
   if(is.null(name)) {
-    name <- .get.name(f);
+    name <- functionToString(f);
   }
 
   # Construct the instance.

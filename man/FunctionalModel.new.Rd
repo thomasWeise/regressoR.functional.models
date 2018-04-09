@@ -5,7 +5,7 @@
 \title{Create a new instance of \code{\link{FunctionalModel}}}
 \usage{
 FunctionalModel.new(f, paramCount, gradient = NULL, estimator = NULL,
-  paramLower = NULL, paramUpper = NULL, name = .get.name(f))
+  paramLower = NULL, paramUpper = NULL, name = functionToString(f))
 }
 \arguments{
 \item{f}{the model function, taking as parameters a value \code{x} followed

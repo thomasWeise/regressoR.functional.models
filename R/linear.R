@@ -1,5 +1,4 @@
 #' @include FunctionalModel.R
-#' @include utils.R
 
 # Compute the parameter values of a linear function from two point coordinates
 .linear.from.two.points <- function(x1, y1, x2, y2) {

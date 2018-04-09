@@ -1,7 +1,6 @@
 #' @include FunctionalModel.R
 #' @include parCheck.R
 #' @include parFix.R
-#' @include utils.R
 
 #' @title Create a Parameter Estimate for a Given Functional Model
 #' @description Use the data available in the functional functional model
@@ -19,6 +18,7 @@
 #' @return the parameter estimate
 #' @export FunctionalModel.par.estimate
 #' @importFrom stats rnorm runif
+#' @importFrom utilizeR ignoreErrors
 FunctionalModel.par.estimate <- function(model, x=NULL, y=NULL, par=NULL) {
   # If an acceptable estimate is already given, use this estimate
   if(FunctionalModel.par.check(model, par)) {
@@ -34,7 +34,7 @@ FunctionalModel.par.estimate <- function(model, x=NULL, y=NULL, par=NULL) {
   if(!(is.null(x) || is.null(y) || is.null(model@estimator))) {
     # The estimator function is defined, let's try using it.
     estimate <- NULL;
-    .ignore.errors(estimate <- model@estimator(x=x, y=y));
+    ignoreErrors(estimate <- model@estimator(x=x, y=y));
     if(FunctionalModel.par.check(model, estimate)) {
       # The estimator function returned reasonable values, use them!
       return(estimate);
