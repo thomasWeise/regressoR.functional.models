@@ -18,9 +18,11 @@ URL: http://www.github.com/thomasWeise/regressoR.functional.models
 BugReports: http://www.github.com/thomasWeise/regressoR.functional.models/issues
 Imports: methods (>= 3.3.2),
          minqa (>= 1.2.4),
-         stats (>= 3.3.2)
+         stats (>= 3.3.2),
+         utilizeR (>= 0.8.0)
 Suggests: testthat (>= 2.0.0),
           roxygen2 (>= 6.0.1)
+Remotes: github::thomasWeise/utilizeR
 Collate: 
     'FunctionalModel.R'
     'internalEstimateSampler.R'
