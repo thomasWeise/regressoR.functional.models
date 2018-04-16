@@ -1,10 +1,3 @@
-# Either a \code{function} or \code{NULL}
-#' @importFrom methods setClassUnion
-setClassUnion(".regressoR.functional.models.functionOrNULL", c("function","NULL"))
-# Either a \code{numeric} \code{vector} or \code{NULL}
-#' @importFrom methods setClassUnion
-setClassUnion(".regressoR.functional.models.vectorOrNULL", c("numeric","NULL"))
-
 #' @title A FunctionalModel for a Functional Model
 #'
 #' @description This class holds the a blueprint for a functional model, i.e.,
@@ -35,14 +28,16 @@ setClassUnion(".regressoR.functional.models.vectorOrNULL", c("numeric","NULL"))
 #' @exportClass FunctionalModel
 #' @seealso FunctionalModel.new
 #' @importFrom methods setClass representation prototype
+#' @importClassesFrom utilizeR functionOrNULL
+#' @importClassesFrom utilizeR numericOrNULL
 FunctionalModel <- setClass(
   Class = "FunctionalModel",
   representation = representation(f="function",
                                   paramCount="integer",
-                                  gradient=".regressoR.functional.models.functionOrNULL",
-                                  estimator=".regressoR.functional.models.functionOrNULL",
-                                  paramLower=".regressoR.functional.models.vectorOrNULL",
-                                  paramUpper=".regressoR.functional.models.vectorOrNULL",
+                                  gradient="functionOrNULL",
+                                  estimator="functionOrNULL",
+                                  paramLower="numericOrNULL",
+                                  paramUpper="numericOrNULL",
                                   name="character"),
   prototype=prototype(gradient=NULL, estimator=NULL, paramLower=NULL, paramUpper=NULL),
   validity = function(object) {
