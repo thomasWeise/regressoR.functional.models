@@ -15,46 +15,6 @@
 #'   \code{NULL} if no finite result is possible
 #' @export FunctionalModel.quadratic.from.three.points
 FunctionalModel.quadratic.from.three.points <- function(x1, y1, x2, y2, x3, y3) {
-  # handle border cases appropriately
-  if(y1 == y2) {
-    if(x1 == x2) {
-      # (x1, y1) == (x2, y2), so we can have a linear function between these two
-      # points and (x3, y3)
-      res <- FunctionalModel.linear.from.two.points(x1, y1, x3, y3);
-      if(!is.null(res)) {
-        return(c(res, 0));
-      }
-    } else {
-      # if (y1 == y2), but (x1 != x2), then only if also (y1 == y2 == y3), we
-      # have a single line
-      if(y3 == y2) {
-        return(c(y2, 0, 0));
-      }
-    }
-  } else {
-    if(y1 == y3) {
-      if(x1 == x3) {
-        # (x1, y1) == (x3, y3), so we can have a linear function between these two
-        # points and (x2, y2)
-        res <- FunctionalModel.linear.from.two.points(x1, y1, x2, y2);
-        if(!is.null(res)) {
-          return(c(res, 0));
-        }
-      } # we know that y1 != y2, so no else here
-    } else {
-      if(y2 == y3) {
-        if(x2 == x3) {
-          # (x2, y2) == (x3, y3), so we can have a linear function between these two
-          # points and (x1, y1)
-          res <- FunctionalModel.linear.from.two.points(x1, y1, x2, y2);
-          if(!is.null(res)) {
-            return(c(res, 0));
-          }
-        }
-      }
-    }
-  }
-  # if we get here, we are not in a special case
   x1s <- x1*x1;
   x2s <- x2*x2;
   x3s <- x3*x3;
