@@ -1,8 +1,60 @@
 #' @include FunctionalModel.R
 #' @include linear.R
 
-# Compute the parameter values of a quadratic function from three points
-.quadratic.from.three.points <- function(x1, y1, x2, y2, x3, y3) {
+#' @title Compute the parameter values of a Quadratic Function from three Point
+#'   Coordinates
+#' @description This function returns the three parameters of a quadratic model
+#'   from three point coordinates.
+#' @param x1 the first \code{x}-coordinate
+#' @param y1 the first \code{y}-coordinate
+#' @param x2 the second \code{x}-coordinate
+#' @param y2 the second \code{y}-coordinate
+#' @param x3 the third \code{x}-coordinate
+#' @param y3 the third \code{y}-coordinate
+#' @return a vector of type \code{(a,b,c)}, such than \code{f(x)=a+b*x+c*x^2} or
+#'   \code{NULL} if no finite result is possible
+#' @export FunctionalModel.quadratic.from.three.points
+FunctionalModel.quadratic.from.three.points <- function(x1, y1, x2, y2, x3, y3) {
+  # handle border cases appropriately
+  if(y1 == y2) {
+    if(x1 == x2) {
+      # (x1, y1) == (x2, y2), so we can have a linear function between these two
+      # points and (x3, y3)
+      res <- FunctionalModel.linear.from.two.points(x1, y1, x3, y3);
+      if(!is.null(res)) {
+        return(c(res, 0));
+      }
+    } else {
+      # if (y1 == y2), but (x1 != x2), then only if also (y1 == y2 == y3), we
+      # have a single line
+      if(y3 == y2) {
+        return(c(y2, 0, 0));
+      }
+    }
+  } else {
+    if(y1 == y3) {
+      if(x1 == x3) {
+        # (x1, y1) == (x3, y3), so we can have a linear function between these two
+        # points and (x2, y2)
+        res <- FunctionalModel.linear.from.two.points(x1, y1, x2, y2);
+        if(!is.null(res)) {
+          return(c(res, 0));
+        }
+      } # we know that y1 != y2, so no else here
+    } else {
+      if(y2 == y3) {
+        if(x2 == x3) {
+          # (x2, y2) == (x3, y3), so we can have a linear function between these two
+          # points and (x1, y1)
+          res <- FunctionalModel.linear.from.two.points(x1, y1, x2, y2);
+          if(!is.null(res)) {
+            return(c(res, 0));
+          }
+        }
+      }
+    }
+  }
+  # if we get here, we are not in a special case
   x1s <- x1*x1;
   x2s <- x2*x2;
   x3s <- x3*x3;
@@ -25,7 +77,7 @@
     sres<-sapply(X=1:min(100L, len-3L),
                  FUN=function(x) {
                    sample <- sample.int(n=len, size=3L);
-                   .quadratic.from.three.points(x[sample[1L]], y[sample[1L]],
+                   FunctionalModel.quadratic.from.three.points(x[sample[1L]], y[sample[1L]],
                                                 x[sample[2L]], y[sample[2L]],
                                                 x[sample[3L]], y[sample[3L]]);
                  });
@@ -43,11 +95,11 @@
   }
 
   if(len >= 3L) {
-    res <- .quadratic.from.three.points(x[1L], y[1L], x[len/2L+1L], y[len/2L+1L], x[len], y[len]);
+    res <- FunctionalModel.quadratic.from.three.points(x[1L], y[1L], x[len/2L+1L], y[len/2L+1L], x[len], y[len]);
     if(!is.null(res)) {
       return(res);
     }
-    res <- .quadratic.from.three.points(x[1L], y[1L], x[2L], y[2L], x[3L], y[3L]);
+    res <- FunctionalModel.quadratic.from.three.points(x[1L], y[1L], x[2L], y[2L], x[3L], y[3L]);
     if(!is.null(res)) {
       return(res);
     }

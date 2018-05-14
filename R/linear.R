@@ -1,7 +1,17 @@
 #' @include FunctionalModel.R
 
-# Compute the parameter values of a linear function from two point coordinates
-.linear.from.two.points <- function(x1, y1, x2, y2) {
+#' @title Compute the parameter values of a Linear Function from two Point
+#'   Coordinates
+#' @description This function returns the two parameters of a linear model from
+#'   two point coordinates.
+#' @param x1 the first \code{x}-coordinate
+#' @param y1 the first \code{y}-coordinate
+#' @param x2 the second \code{x}-coordinate
+#' @param y2 the second \code{y}-coordinate
+#' @return a vector of type \code{(m,n)}, such than \code{f(x)=n+m*x} or
+#'   \code{NULL} if no finite result is possible
+#' @export FunctionalModel.linear.from.two.points
+FunctionalModel.linear.from.two.points <- function(x1, y1, x2, y2) {
   if(y2 == y1) {
     return(c(y2, 0L));
   }
@@ -24,19 +34,19 @@
   res <- NULL;
   if(len > 2L){
     mid <- as.integer(len/2L)
-    res <- .linear.from.two.points(mean(x[1L:mid]), mean(y[1L:mid]),
+    res <- FunctionalModel.linear.from.two.points(mean(x[1L:mid]), mean(y[1L:mid]),
                                    mean(x[(mid+1L):len]), mean(y[(mid+1L):len]));
     if(!is.null(res)) {
       return(res);
     }
   }
   if(len >= 2L) {
-    res <- .linear.from.two.points(x[1L], y[1L], x[len], y[len]);
+    res <- FunctionalModel.linear.from.two.points(x[1L], y[1L], x[len], y[len]);
     if(!is.null(res)) {
       return(res);
     }
 
-    res <- .linear.from.two.points(x[1L], y[1L], x[2L], y[2L]);
+    res <- FunctionalModel.linear.from.two.points(x[1L], y[1L], x[2L], y[2L]);
     if(!is.null(res)) {
       return(res);
     }

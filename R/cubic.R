@@ -1,7 +1,22 @@
 #' @include quadratic.R
 
-# Compute the values of a cubic function from four points
-.cubic.from.four.points <- function(x1, y1, x2, y2, x3, y3, x4, y4) {
+#' @title Compute the parameter values of a Cubic Function from four Point
+#'   Coordinates
+#' @description This function returns the four parameters of a cubic model from
+#'   four point coordinates.
+#' @param x1 the first \code{x}-coordinate
+#' @param y1 the first \code{y}-coordinate
+#' @param x2 the second \code{x}-coordinate
+#' @param y2 the second \code{y}-coordinate
+#' @param x3 the third \code{x}-coordinate
+#' @param y3 the third \code{y}-coordinate
+#' @param x4 the fourth \code{x}-coordinate
+#' @param y4 the fourth \code{y}-coordinate
+#' @return a vector of type \code{(a,b,c,d)}, such than
+#'   \code{f(x)=a+b*x+c*x^2+d*x^3} or \code{NULL} if no finite result is
+#'   possible
+#' @export FunctionalModel.cubic.from.four.points
+FunctionalModel.cubic.from.four.points <- function(x1, y1, x2, y2, x3, y3, x4, y4) {
   x1.2 <- x1 * x1;
   x1.3 <- x1.2 * x1;
 
@@ -48,7 +63,7 @@
     sres<-sapply(X=1:min(100L, len-4L),
                  FUN=function(x) {
                    sample <- sample.int(n=len, size=4L);
-                   .cubic.from.four.points(x[sample[1L]], y[sample[1L]],
+                   FunctionalModel.cubic.from.four.points(x[sample[1L]], y[sample[1L]],
                                            x[sample[2L]], y[sample[2L]],
                                            x[sample[3L]], y[sample[3L]],
                                            x[sample[4L]], y[sample[4L]]);
@@ -67,14 +82,14 @@
   }
 
   if(len >= 4L) {
-    res <- .cubic.from.four.points(x[1L], y[1L],
+    res <- FunctionalModel.cubic.from.four.points(x[1L], y[1L],
                                    x[len/3L+1L], y[len/3L+1L],
                                    x[(2L*len)/3L+1L], y[(2L*len)/3L+1L],
                                    x[len], y[len]);
     if(!is.null(res)) {
       return(res);
     }
-    res <- .cubic.from.four.points(x[1L], y[1L], x[2L], y[2L], x[3L], y[3L], x[4L], y[4L]);
+    res <- FunctionalModel.cubic.from.four.points(x[1L], y[1L], x[2L], y[2L], x[3L], y[3L], x[4L], y[4L]);
     if(!is.null(res)) {
       return(res);
     }
