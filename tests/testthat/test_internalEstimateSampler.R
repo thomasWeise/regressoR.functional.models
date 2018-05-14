@@ -2,6 +2,8 @@ library("regressoR.functional.models")
 context("internalEstimateSampler")
 
 test_that(".solve.np", {
+  set.seed(10000L);
+
   x          <- runif(n=20);
   f          <- function(x, par) par[1] + par[2]*x;
   par        <- c(4, 3);
@@ -24,6 +26,8 @@ test_that(".solve.np", {
 
 
 test_that(".estimate.internal (1)", {
+  set.seed(10000L);
+
   x          <- runif(n=20);
   f          <- function(x, par) par[1] + par[2]*x;
   par        <- c(4, 3);
@@ -44,6 +48,8 @@ test_that(".estimate.internal (1)", {
 
 
 test_that(".estimate.internal (2)", {
+  set.seed(10000L);
+
   x          <- runif(n=20);
   f          <- function(x, par) par[1] + par[2]*x + par[3]*sin(x);
   par        <- c(4, 3, 12);
@@ -65,6 +71,8 @@ test_that(".estimate.internal (2)", {
 
 
 test_that(".estimate.internal (3)", {
+  set.seed(10000L);
+
   x          <- runif(n=1220);
   f          <- function(x, par) atan(par[1] + par[2]*x + par[3]*sin(x)) + par[4];
   par        <- c(4, 3, 12, 0.5);
