@@ -2,7 +2,7 @@
 
 # The internal constant for constant models
 .constant <- FunctionalModel.new(
-  f = function(x, par) par[1L],
+  f = function(x, par) rep(par[1L], length(x)),
   paramCount = 1L,
   estimator = function(x, y) { mean(y) },
   gradient = function(x, par) c(1),
