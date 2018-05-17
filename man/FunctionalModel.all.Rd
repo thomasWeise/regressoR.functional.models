@@ -11,7 +11,10 @@ a list with all models provided by this library.
 }
 \description{
 This function returns a list with the all the models provided by
-  this library.
+  this library. Currently, these comprise standard constant, linear,
+  quadratic, and cubic models as well as several sigmoid-style models such as
+  exponential decay, logistic models, the Gompertz model, and an exponential
+  log-linear model.
 }
 \seealso{
 FunctionalModel.new
