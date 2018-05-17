@@ -10,7 +10,7 @@ test_that("Test FunctionalModel.constant", {
   expect_identical(model@paramUpper, NULL)
   validObject(model)
 
-  lin<-function(x,par){par[1]}
+  lin<-function(x,par){ rep(par[1], length(x)) }
 
   par<-c(1);
   x<-c(1)
