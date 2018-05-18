@@ -11,7 +11,7 @@ data.y <- data[[3]];
 plot(log(data.x), data.y);
 
 # then we load the models
-models <- regressoR.functional.models::FunctionalModel.all();
+models <- regressoR.functional.models::FunctionalModel.default();
 names  <- sapply(models, as.character);
 count  <- length(models);
 

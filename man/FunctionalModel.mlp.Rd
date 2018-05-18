@@ -3,16 +3,28 @@
 \name{FunctionalModel.mlp}
 \alias{FunctionalModel.mlp}
 \title{Create a Multi-Layer Perceptron Model with the Given Layers and
-Activation Function}
+  Activation Function}
 \usage{
-FunctionalModel.mlp(layers, func = "tanh")
+FunctionalModel.mlp(layers, decreasing = FALSE, func = "tanh",
+  func.mode = 1L)
 }
 \arguments{
 \item{layers}{the vector of layers, e.g., \code{c(1)} for a perceptron with a
 single input=output node, \code{1, 2, 1} with an input node, two hidden
 nodes, and an output node.}
 
+\item{decreasing}{if \code{TRUE}, then an MLP is generated whose parameter
+range is limited such that only a monotonously decreasing function can be
+represented. If \code{FALSE}, a general MLP which can represent arbitrary
+function shapes (within its degrees of freedom) is produced.}
+
 \item{func}{the activation function}
+
+\item{func.mode}{Only relevant if \code{decreasing==TRUE}: If we want to
+generate a monotonously decreasing perceptron, then we need to know whether
+the activation function \code{func} is itself monotnously decreasing
+(\code{mode==-1L}) or increasing (\code{model==1L}). The default
+\code{tanh} function is increasing.}
 }
 \value{
 a functional model representing the given perceptron

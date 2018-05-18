@@ -1,7 +1,7 @@
 Package: regressoR.functional.models
 Type: Package
 Title: An R Package Providing an Blueprints and Tools for Functional Models for Regression
-Version: 0.8.13
+Version: 0.8.14
 Author: Dr. Thomas Weise <tweise@hfuu.edu.cn>
 Maintainer: Dr. Thomas Weise <tweise@hfuu.edu.cn>
 Description: In this package, we provide blueprints and tools for defining functional models
@@ -16,7 +16,8 @@ Encoding: UTF-8
 LazyData: true
 URL: http://www.github.com/thomasWeise/regressoR.functional.models
 BugReports: http://www.github.com/thomasWeise/regressoR.functional.models/issues
-Imports: methods (>= 3.3.2),
+Imports: compiler (>= 3.3.2),
+         methods (>= 3.3.2),
          minqa (>= 1.2.4),
          stats (>= 3.3.2),
          utilizeR (>= 0.8.0)
@@ -26,18 +27,18 @@ Depends: R (>= 3.3.0)
 Remotes: github::thomasWeise/utilizeR
 Collate: 
     'FunctionalModel.R'
+    'constant.R'
+    'linear.R'
+    'quadratic.R'
+    'cubic.R'
     'internalEstimateSampler.R'
+    'mlp.R'
+    'mlpDefault.R'
     'expLogLinear.R'
     'exponentialDecay.R'
     'gompertz.R'
     'logistic.R'
-    'linear.R'
-    'quadratic.R'
-    'cubic.R'
-    'constant.R'
-    'all.R'
-    'mlp.R'
-    'mlpDefault.R'
+    'default.R'
     'parCheck.R'
     'parFix.R'
     'parEstimate.R'

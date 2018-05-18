@@ -86,7 +86,7 @@ test_that("Test estimate over all default models", {
   for(i in 5*(1:10)) {
     x <- runif(n=i, min=1, max=100);
     y <- runif(n=i, min=1, max=100);
-    for(model in FunctionalModel.all()) {
+    for(model in FunctionalModel.default()) {
       result <- FunctionalModel.par.estimate(model, x, y);
       expect_true(!(is.null(result)));
       expect_identical(length(result), model@paramCount);
@@ -94,4 +94,19 @@ test_that("Test estimate over all default models", {
     }
   }
 })
+
+
+test_that("Test estimate over all default monotonous models", {
+  for(i in 5*(1:10)) {
+    x <- runif(n=i, min=1, max=100);
+    y <- runif(n=i, min=1, max=100);
+    for(model in FunctionalModel.monotonous()) {
+      result <- FunctionalModel.par.estimate(model, x, y);
+      expect_true(!(is.null(result)));
+      expect_identical(length(result), model@paramCount);
+      expect_true(FunctionalModel.par.check(model, result));
+    }
+  }
+})
+
 

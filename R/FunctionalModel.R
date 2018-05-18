@@ -202,9 +202,9 @@ FunctionalModel.new <- function(f, paramCount, gradient=NULL, estimator=NULL,
 
   # Construct the instance.
   result <- methods::new("FunctionalModel",
-                        f=f, paramCount=paramCount, gradient=gradient,
-                             estimator=estimator, paramLower=paramLower,
-                        paramUpper=paramUpper, name=name);
+                         f=f, paramCount=paramCount, gradient=gradient,
+                         estimator=estimator, paramLower=paramLower,
+                         paramUpper=paramUpper, name=name);
   result <- force(result);
   result@f <- force(result@f);
   result@paramCount <- force(result@paramCount);

@@ -10,6 +10,9 @@ FunctionalModel.mlp.default()
 the list of default MLPs
 }
 \description{
-Obtain a list of MLP-based models which are reasonable for a wide variety
-of applications.
+Obtain a list of MLP-based models which are reasonable for a
+  wide variety of applications.
+}
+\seealso{
+FunctionalModel.mlp.monotonous
 }
