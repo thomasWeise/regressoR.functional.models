@@ -28,6 +28,7 @@
 #' @exportClass FunctionalModel
 #' @seealso FunctionalModel.new
 #' @importFrom methods setClass representation prototype
+#' @importFrom utilizeR function.args
 #' @importClassesFrom utilizeR functionOrNULL
 #' @importClassesFrom utilizeR numericOrNULL
 FunctionalModel <- setClass(
@@ -45,12 +46,7 @@ FunctionalModel <- setClass(
     if(is.null(object@f) || (!(is.function(object@f)))){
       return("Model function must be non-null and a proper function.")
     }
-    if(is.primitive(object@f)) {
-      f.args <- formals(args(object@f));
-    } else {
-      f.args <- formals(object@f);
-    }
-    if ((length(f.args) != 2L) || (!(identical(names(f.args), c("x", "par"))))) {
+    if (!(identical(function.args(object@f), c("x", "par")))) {
       return("Model function must take exactly two arguments two arguments named 'x' and 'par'.");
     }
 
@@ -107,13 +103,7 @@ FunctionalModel <- setClass(
       if(!(is.function(object@gradient))) {
         return("Gradient must be a function if specified.");
       }
-      if(is.primitive(object@gradient)) {
-        gradient.args <- formals(args(object@gradient));
-      } else {
-        gradient.args <- formals(object@gradient);
-      }
-      if ((length(gradient.args) != 2L) ||
-          (!(identical(names(gradient.args), c("x", "par"))))) {
+      if (!(identical(function.args(object@gradient), c("x", "par")))) {
         return("Model gradient function must take exactly two arguments two arguments named 'x' and 'par'.");
       }
     }
@@ -123,13 +113,7 @@ FunctionalModel <- setClass(
       if(!(is.function(object@estimator))) {
         return("Estimator must be a function if specified.");
       }
-      if(is.primitive(object@estimator)) {
-        estimator.args <- formals(args(object@estimator));
-      } else {
-        estimator.args <- formals(object@estimator);
-      }
-      if ((length(estimator.args) != 2L) ||
-          (!(identical(names(estimator.args), c("x", "y"))))) {
+      if (!(identical(function.args(object@estimator), c("x", "y")))) {
         return("Model estimator function must take exactly two arguments two arguments named 'x', and 'y'.");
       }
     }
@@ -170,10 +154,10 @@ FunctionalModel <- setClass(
 #' @return the new functional functional model
 #' @export FunctionalModel.new
 #' @importFrom methods new validObject
-#' @importFrom utilizeR functionToString
+#' @importFrom utilizeR function.toString
 FunctionalModel.new <- function(f, paramCount, gradient=NULL, estimator=NULL,
                                 paramLower=NULL, paramUpper=NULL,
-                                name=functionToString(f)) {
+                                name=function.toString(f)) {
 
   if(!(is.null(paramLower))) {
     # Alias negative infinite lower limits to NA.
@@ -197,7 +181,7 @@ FunctionalModel.new <- function(f, paramCount, gradient=NULL, estimator=NULL,
 
   # setup the name
   if(is.null(name)) {
-    name <- functionToString(f);
+    name <- function.toString(f);
   }
 
   # Construct the instance.

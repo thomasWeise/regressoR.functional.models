@@ -1,7 +1,7 @@
 Package: regressoR.functional.models
 Type: Package
 Title: An R Package Providing an Blueprints and Tools for Functional Models for Regression
-Version: 0.8.14
+Version: 0.8.15
 Author: Dr. Thomas Weise <tweise@hfuu.edu.cn>
 Maintainer: Dr. Thomas Weise <tweise@hfuu.edu.cn>
 Description: In this package, we provide blueprints and tools for defining functional models
@@ -20,7 +20,7 @@ Imports: compiler (>= 3.3.2),
          methods (>= 3.3.2),
          minqa (>= 1.2.4),
          stats (>= 3.3.2),
-         utilizeR (>= 0.8.0)
+         utilizeR (>= 0.8.4)
 Suggests: testthat (>= 2.0.0),
           roxygen2 (>= 6.0.1)
 Depends: R (>= 3.3.0)
